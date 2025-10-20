@@ -1,6 +1,6 @@
 "use client";
 
-import GlobalCard from "../components/common/ProductCard";
+import GlobalCard from "../components/common/globalCard";
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 

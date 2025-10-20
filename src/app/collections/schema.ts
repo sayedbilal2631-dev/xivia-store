@@ -1,85 +1,34 @@
 import { DocumentReference, Timestamp } from 'firebase/firestore';
 
 export interface Store {
-  id: string;
-  ownerId: string; // Reference to users collection
+  id?: string;
+  ownerId: string;
   storeName: string;
   description: string;
   category: string;
-  email: string;
-  phone: string;
+  email?: string;
+  phone?: string;
   website?: string;
-  contactInfo: {  // contact 
-    email: string;
-    phone?: string;
-  };
-
-  address?: { // location
+  address?: {
     street: string;
     city: string;
     state: string;
     zipCode: string;
     country: string;
-    coordinates?: {
-      latitude: number;
-      longitude: number;
-    };
   };
-
-  media?: {   // Media
-    logo: string;
-    banner: string;
-    images?: string[];
-  }
-
-  businessHours?: {  // Business Information
-    [day: string]: {
-      open: string; // "09:00"
-      close: string; // "17:00"
-      isClosed: boolean;
-    };
+  seo?: {
+    title: string;
+    description: string;
   };
-
-  // Settings & Status
-  isActive: boolean;
-  isVerified: boolean;
-  settings?: {
-    allowReturns: boolean;
-    returnPeriod: number; // days
-    minimumOrder: number;
-    freeShippingThreshold: number;
-    notificationPreferences: {
-      email: boolean;
-      sms: boolean;
-      push: boolean;
-    };
+  contactInfo?: {
+    phone: string;
+    email: string;
   };
-
-  // Analytics & Metrics
-  metrics?: {
-    totalProducts: number;
-    totalOrders: number;
-    totalRevenue: number;
-    averageRating: number;
-    reviewCount: number;
-  };
-
-  // Social & SEO
-  socialMedia?: {
-    facebook?: string;
-    instagram?: string;
-    twitter?: string;
-  };
-  seo: {
-    metaTitle?: string;
-    metaDescription?: string;
-    slug: string;
-  };
-
-  // Timestamps
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt?: Date;
+  updatedAt?: Date;
+  isVerified?: boolean;
 }
+
 
 // Store Categories
 export type StoreCategory =
@@ -129,7 +78,7 @@ export interface StoreFormData {
   };
 
   // Business Hours
-  businessHours: Store['businessHours'];
+  // businessHours: Store['businessHours'];
 
   // Settings
   settings: {

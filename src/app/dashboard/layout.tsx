@@ -19,10 +19,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        console.log("✅ Current user:", currentUser);
       } else {
         setUser(null);
-        console.log("❌ No user found");
       }
     });
 

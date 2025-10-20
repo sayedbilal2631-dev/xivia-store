@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { StoreCategory, defaultBusinessHours } from "@/app/collections/schema";
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
+import { auth } from "@/app/config/firebase";
+import { useRouter } from "next/navigation";
 
 const categories: StoreCategory[] = [
   "electronics",
@@ -31,7 +33,7 @@ const categories: StoreCategory[] = [
 const CreateStoreForm = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    ownerId: "user123", // ✅ Replace with Auth UID dynamically
+    // ownerId: "user123",  
     storeName: "",
     description: "",
     category: "other",
@@ -60,7 +62,8 @@ const CreateStoreForm = () => {
     isActive: true,
     isVerified: false,
   });
-
+  const user = auth.currentUser;
+ const router = useRouter()
   // ✅ Handle top-level field changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -87,26 +90,34 @@ const CreateStoreForm = () => {
     setLoading(true);
 
     try {
-      const storeId = await StoreService.createStore(formData);
-      alert(`✅ Store created successfully! (ID: ${storeId})`);
-
-      // Optionally reset form
-      setFormData({
-        ...formData,
-        storeName: "",
-        description: "",
-        category: "other",
-        email: "",
-        phone: "",
-        website: "",
-        address: {
-          street: "",
-          city: "",
-          state: "",
-          zipCode: "",
-          country: "",
-        },
-      });
+      if (!user) {
+        alert('Sign in first please')
+        return;
+      }else{
+        const storeId = await StoreService.createStore({
+          ...formData,
+          ownerId: user?.uid
+        });
+        alert(`✅ Store created successfully! (ID: ${storeId})`);
+        // Optionally reset form
+        setFormData({
+          ...formData,
+          storeName: "",
+          description: "",
+          category: "other",
+          email: "",
+          phone: "",
+          website: "",
+          address: {
+            street: "",
+            city: "",
+            state: "",
+            zipCode: "",
+            country: "",
+          },
+        });
+      }
+     router.push('/dashboard')
     } catch (error) {
       console.error("❌ Error creating store:", error);
       alert("Failed to create store. Check console for details.");

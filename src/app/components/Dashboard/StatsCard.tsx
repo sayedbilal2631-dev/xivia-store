@@ -9,7 +9,6 @@ import {
   Inventory,
 } from '@mui/icons-material';
 import { StatsCardProps } from '@/app/collections/types';
-// import { StatsCardProps } from '../../types';
 
 const StatsCard: React.FC<StatsCardProps> = ({ title, value, icon, trend, color }) => {
   const isPositive = trend >= 0;

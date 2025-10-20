@@ -7,25 +7,29 @@ import {
   OrderStatus, PaymentStatus, ProductStatus, ProductCategory 
 } from '@/app/collections/schema';
 import { db } from '@/app/config/firebase';
-import { CreateStoreData } from '@/app/collections/store';
+// import { CreateStoreData } from '@/app/collections/store';
 
 export class StoreService {
   // Create new store
-  static async createStore(storeData: CreateStoreData): Promise<string> {
-    const storeRef = await addDoc(collection(db, 'stores'), {
-      ...storeData,
-      metrics: {
-        totalProducts: 0,
-        totalOrders: 0,
-        totalRevenue: 0,
-        averageRating: 0,
-        reviewCount: 0
-      },
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    });
-    return storeRef.id;
-  }
+ static async createStore(storeData: Partial<Store>): Promise<string> {
+  const storeRef = await addDoc(collection(db, 'stores'), {
+    ...storeData,
+    isVerified: false,
+    metrics: {
+      totalProducts: 0,
+      totalOrders: 0,
+      totalRevenue: 0,
+      averageRating: 0,
+      reviewCount: 0,
+    },
+    products: [],
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+  });
+
+  return storeRef.id;
+}
+
 
   // Get store by ID
   static async getStore(storeId: string): Promise<Store | null> {
@@ -72,12 +76,12 @@ export class StoreService {
   }
   
   // Update store metrics
-  static async updateStoreMetrics(storeId: string, updates: Partial<Store['metrics']>): Promise<void> {
-    await updateDoc(doc(db, 'stores', storeId), {
-      metrics: updates,
-      updatedAt: Timestamp.now()
-    });
-  }
+  // static async updateStoreMetrics(storeId: string, updates: Partial<Store['metrics']>): Promise<void> {
+  //   await updateDoc(doc(db, 'stores', storeId), {
+  //     metrics: updates,
+  //     updatedAt: Timestamp.now()
+  //   });
+  // }
   
   // Toggle store status
   static async toggleStoreStatus(storeId: string, isActive: boolean): Promise<void> {
