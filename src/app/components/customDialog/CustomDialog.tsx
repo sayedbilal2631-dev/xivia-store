@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box, } from "@mui/material";
+import { Dialog, DialogActions, DialogContent,  } from "@mui/material";
 import { colors } from "@/app/constants/colors";
 import AuthButton from "../common/AuthButton";
 import React from "react";
