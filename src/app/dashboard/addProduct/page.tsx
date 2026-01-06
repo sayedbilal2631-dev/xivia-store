@@ -32,8 +32,9 @@ interface ProductFormData {
 const ProductDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
+
   const [formData, setFormData] = useState<ProductFormData>({
-    storeId: "store123", // replace this with logged-in store’s ID
+    storeId: "store123", 
     name: "",
     description: "",
     category: "",

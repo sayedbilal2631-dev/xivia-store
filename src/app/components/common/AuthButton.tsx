@@ -1,20 +1,8 @@
-
-
 "use client";
-
+import { AuthButtonProps } from "@/app/collections/types";
 import { Button, CircularProgress } from "@mui/material";
 import React from "react";
 
-interface AuthButtonProps {
-  icon?: React.ReactNode;
-  label: string;
-  onClick?: () => void;
-  type?: "button" | "submit";
-  variant?: "contained" | "outlined";
-  loading?: boolean;
-  disabled?: boolean;
-  color?: string;
-}
 
 export default function AuthButton({
   icon,
@@ -25,6 +13,7 @@ export default function AuthButton({
   loading = false,
   disabled = false,
   color = "#ff6a00",
+  width:width
 }: AuthButtonProps) {
   return (
     <Button
@@ -35,6 +24,7 @@ export default function AuthButton({
       onClick={onClick}
       disabled={disabled || loading}
       sx={{
+        width:width,
         mb: 1.5,
         textTransform: "none",
         backgroundColor: variant === "contained" ? color : undefined,

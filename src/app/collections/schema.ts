@@ -132,61 +132,41 @@ export type ProductStatus = 'active' | 'inactive' | 'out-of-stock' | 'discontinu
 // Product Interface
 export interface Product {
   id: string;
-  storeId: DocumentReference; // Reference to stores collection
+  storeId: string;
   name: string;
   description: string;
-  shortDescription?: string;
-  price: number;
-  comparePrice?: number; // Original price for sales
-  costPrice?: number; // Cost for profit calculation
+  price: number | null;
+  costPrice?: number | null;
   category: ProductCategory;
-  subcategory?: string;
   tags: string[];
   sku: string;
   barcode?: string;
-  
-  // Inventory
-  stock: number;
-  lowStockAlert: number;
+  stock: number | null;
   trackQuantity: boolean;
   allowBackorders: boolean;
-  
-  // Shipping
   weight?: number;
   dimensions?: {
     length: number;
     width: number;
     height: number;
   };
-  
-  // Media
   images: string[];
   primaryImage: string;
-  
-  // Variants
   hasVariants: boolean;
   variants?: ProductVariant[];
-  
-  // SEO
   seo: {
     title?: string;
     description?: string;
-    slug: string;
+    slug?: string;
   };
-  
-  // Status
   status: ProductStatus;
   isFeatured: boolean;
-  
-  // Analytics
   metrics: {
     viewCount: number;
     purchaseCount: number;
     averageRating: number;
     reviewCount: number;
   };
-  
-  // Timestamps
   createdAt: Timestamp;
   updatedAt: Timestamp;
   publishedAt?: Timestamp;
@@ -393,3 +373,4 @@ export const paymentStatusLabels: Record<PaymentStatus, string> = {
   'refunded': 'Refunded',
   'cancelled': 'Cancelled'
 };
+

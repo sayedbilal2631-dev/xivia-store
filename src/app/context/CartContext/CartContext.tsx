@@ -3,26 +3,40 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface CartContextType {
+  cartItems: number[];
   cartCount: number;
-  addToCart: () => void;
+  addToCart: (id: number) => void;
+  removeFromCart: (id: number) => void;
   clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartCount, setCartCount] = useState(0);
+  const [cartItems, setCartItems] = useState<number[]>([]);
 
-  const addToCart = () => {
-    setCartCount((prev) => prev + 1);
+  const addToCart = (id: number) => {
+    setCartItems((prev) => [...prev, id]);
+  };
+
+  const removeFromCart = (id: number) => {
+    setCartItems((prev) => prev.filter((itemId) => itemId !== id));
   };
 
   const clearCart = () => {
-    setCartCount(0);
+    setCartItems([]);
   };
 
   return (
-    <CartContext.Provider value={{ cartCount, addToCart, clearCart }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        cartCount: cartItems.length,
+        addToCart,
+        removeFromCart,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

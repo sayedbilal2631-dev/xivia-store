@@ -1,13 +1,8 @@
 "use client";
 
+import { AuthCardProps } from "@/app/collections/types";
 import { Paper, Typography, Box } from "@mui/material";
 import React from "react";
-
-interface AuthCardProps {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-}
 
 export default function AuthCard({ title, subtitle, children }: AuthCardProps) {
   return (

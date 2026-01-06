@@ -1,21 +1,32 @@
 "use client"
-import { PersonOutline } from "@mui/icons-material"
 import { Box, IconButton, Typography } from "@mui/material"
+import getCurrentUser from "@/app/hooks/getCurrentUser"
+import { PersonOutline } from "@mui/icons-material"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Info from "./Info"
-import { useRouter } from "next/navigation"
+import {
+    Store as StoreIcon,
+    ShoppingBag as ShoppingBagIcon,
+    Message as MessageIcon,
+    LocalOffer as LocalOfferIcon,
+    Logout as LogoutIcon,
+} from '@mui/icons-material';
+import Link from "next/link"
+
 
 const User = () => {
     const [open, setOpen] = useState(false)
+    const user = getCurrentUser();
     const router = useRouter();
+    const { name, email, createdAt } = user || {};
     const userInfo = [
-        { name: 'My Profile', path: '#' },
-        { name: 'My Store', path: '/dashboard/createStore' },
-        { name: 'My Orders', path: '#' },
-        { name: 'My Message', path: '#' },
-        { name: 'My Coupens', path: '#' },
-        { name: 'Sign Out', path: '#' },
-    ]
+        { name: 'My Store', path: '/store', icon: <StoreIcon /> },
+        { name: 'My Orders', path: '#', icon: <ShoppingBagIcon /> },
+        { name: 'My Message', path: '#', icon: <MessageIcon /> },
+        { name: 'My Coupens', path: '#', icon: <LocalOfferIcon /> },
+        { name: 'Sign Out', path: '#', icon: <LogoutIcon /> },
+    ];
     const nextPage = () => {
         router.push('/auth/signIn')
     }
@@ -38,19 +49,44 @@ const User = () => {
                         sx={{
                             position: "absolute",
                             top: "100%",
-                            left: 0,
+                            right: 0,
                             bgcolor: "white",
                             boxShadow: 3,
                             borderRadius: "8px",
-                            p: 2,
-                            minWidth: "120px",
-                        }}
-                    >
-                        {userInfo.map((item, idx) => {
-                            return (
-                                <Info key={idx} data={item} />
-                            )
-                        })}
+                            minWidth: "150px",
+                        }}>
+                        {name && (
+                            <Box
+                                sx={{
+                                    backgroundColor: '#ECF4E8',
+                                    px: 2,
+                                    transition: '0.3s',
+                                    cursor: 'pointer',
+                                    color: 'gray',
+                                    py: 1,
+                                }}>
+                                <Typography sx={{ display: 'flex', gap: '5px' }}>
+                                    <Link
+                                        onMouseEnter={(e) => (e.currentTarget.style.color = "black")}
+                                        onMouseLeave={(e) => (e.currentTarget.style.color = "gray")}
+                                        href={'/profile'} style={{ textDecoration: 'none', color: 'gray', cursor: 'pointer' }}>
+                                        <PersonOutline />
+                                        {name ? (<Box component={'span'} sx={{display:'flex', flexDirection:'column'}}><Typography component={'span'} sx={{textTransform:'capitalize'}} fontWeight={'bold'} fontSize={12}>Hi {name}</Typography > <Typography component={'span'} fontSize={10}>View your profile</Typography></Box>) : ""}
+                                    </Link>
+                                </Typography>
+                            </Box>
+                        )}
+                        <Box
+                            sx={{
+                                p: 2,
+                            }}
+                        >
+                            {userInfo.map((item, idx) => {
+                                return (
+                                    <Info key={idx} data={item} />
+                                )
+                            })}
+                        </Box>
                     </Box>
                 )}
             </Box>

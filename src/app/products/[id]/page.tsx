@@ -20,6 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { useCart } from "@/app/context/CartContext/CartContext";
+import AuthButton from "@/app/components/common/AuthButton";
 
 interface Product {
     id: number;
@@ -198,8 +199,7 @@ const ProductDetails = () => {
                                             height={80}
                                             style={{
                                                 objectFit: "cover",
-                                                width: "100%",
-                                                height: "100%",
+                                            
                                             }}
                                         />
                                     </Box>
@@ -354,7 +354,7 @@ const ProductDetails = () => {
                                         color: "#fff",
                                     },
                                 }}
-                                onClick={addToCart}
+                            // onClick={addToCart(product.id)}
                             >
                                 Add to Cart
                             </Button>

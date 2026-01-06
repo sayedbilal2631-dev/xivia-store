@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React, { ReactNode } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -7,18 +8,9 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
+import { MUIModalProps } from "@/app/collections/types";
 
-interface MUIModalProps {
-  open: boolean;
-  onClose: () => void;
-  title?: string;
-  children: React.ReactNode;
-  onConfirm?: () => void;
-  confirmText?: string;
-  cancelText?: string;
-}
-
-const MUIModal: React.FC<MUIModalProps> = ({
+const MuiSelect: React.FC<MUIModalProps> = ({
   open,
   onClose,
   title,
@@ -30,7 +22,9 @@ const MUIModal: React.FC<MUIModalProps> = ({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       {title && <DialogTitle>{title}</DialogTitle>}
+
       <DialogContent>{children}</DialogContent>
+
       <DialogActions>
         <Button onClick={onClose} color="secondary">
           {cancelText}
@@ -45,4 +39,4 @@ const MUIModal: React.FC<MUIModalProps> = ({
   );
 };
 
-export default MUIModal;
+export default MuiSelect;

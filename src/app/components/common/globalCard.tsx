@@ -1,21 +1,13 @@
 "use client";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Rating,
-  IconButton,
-  Button,
-} from "@mui/material";
+import {Box, Card, CardContent, Typography, Rating, IconButton, Button,} from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useCart } from "@/app/context/CartContext/CartContext";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import Image from "next/image";
-import { useState } from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/app/context/CartContext/CartContext";
+import { useState } from "react";
+import Image from "next/image";
 
 interface GlobalCardProps {
   data: any;
@@ -26,7 +18,6 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
   const [wishlisted, setWishlisted] = useState(false);
   const router = useRouter();
   const { addToCart } = useCart();
-
   const goToProduct = (id: number) => router.push(`/products/${id}`);
 
   const handleWishlist = (e: React.MouseEvent) => {
@@ -69,6 +60,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
               : data.thumbnail
           }
           alt={data.title}
+          sizes="250px"
           fill
           style={{
             objectFit: "cover",
@@ -220,7 +212,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             }}
             onClick={(e) => {
               e.stopPropagation();
-              addToCart();
+              addToCart(data.id);
             }}
           >
             <ShoppingCartIcon />

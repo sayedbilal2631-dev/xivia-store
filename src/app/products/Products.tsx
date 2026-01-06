@@ -42,7 +42,7 @@ const Products = () => {
     return (
         <Grid container spacing={2}>
             {products.map((product) => (
-                <Grid key={product.id} size={{ md: 3, sm: 4, xs: 6 }}>
+                <Grid  key={product.id} size={{ lg: 3, md:4, sm: 6, xs: 12 }}>
                     <GlobalCard data={product} />
                 </Grid>
             ))}

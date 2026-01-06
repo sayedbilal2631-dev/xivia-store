@@ -1,4 +1,4 @@
-import { Language, SupportAgentOutlined } from '@mui/icons-material';
+// import { Language, SupportAgentOutlined } from '@mui/icons-material';
 import User from './PersonalInfo/User';
 import { Box, Typography, } from "@mui/material"
 import { useState } from 'react';
@@ -8,10 +8,10 @@ const Icons = () => {
     const [openCart, setOpenCart] = useState(false);
     return (
         <Box sx={{ gap: '10px', display: 'flex', alignItems: 'center' }}>
+            <Cart/>
             <User />
-            <Cart />
-            <SupportAgentOutlined />
-            <Language />
+            {/* <SupportAgentOutlined />
+            <Language /> */}
         </Box>
     )
 }

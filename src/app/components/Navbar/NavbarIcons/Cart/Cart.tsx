@@ -4,90 +4,111 @@ import {
   IconButton,
   Typography,
   Badge,
+  Drawer,
+  Button,
 } from "@mui/material";
 import {
   ProductionQuantityLimits,
   ShoppingCartCheckoutOutlined,
 } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/app/context/CartContext/CartContext";
+import CartProduct from "./CartProduct";
 
 const Cart = () => {
   const [openCart, setOpenCart] = useState(false);
-  const { cartCount } = useCart();
+  const { cartItems, cartCount, clearCart } = useCart();
+  const [cartProducts, setCartProducts] = useState<any[]>([]);
+
+  const handleToggleCart = (state: boolean) => () => {
+    setOpenCart(state);
+  };
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      // Fetch all products
+      Promise.all(
+        cartItems.map((id) =>
+          fetch(`https://dummyjson.com/products/${id}`).then((res) => res.json())
+        )
+      ).then((data) => {
+        setCartProducts(data);
+      });
+    } else {
+      setCartProducts([]);
+    }
+  }, [cartItems]);
 
   return (
     <Box>
-      <Box sx={{ position: "relative", display: "inline-block" }}>
-        <IconButton
-          onMouseEnter={() => setOpenCart(true)}
-          onMouseLeave={() => setOpenCart(false)}
-          sx={{ color: "black" }}
+      {/* Cart Icon */}
+      <IconButton onClick={handleToggleCart(true)} sx={{ color: "black" }}>
+        <Badge
+          badgeContent={cartCount > 9 ? "9+" : cartCount}
+          color="error"
+          overlap="circular"
+          sx={{
+            "& .MuiBadge-badge": {
+              fontSize: "0.7rem",
+              height: "18px",
+              minWidth: "18px",
+            },
+          }}
         >
-          <Badge
-            badgeContent={cartCount > 9 ? "9+" : cartCount}
-            color="error"
-            overlap="circular"
-            sx={{
-              "& .MuiBadge-badge": {
-                fontSize: "0.7rem",
-                height: "18px",
-                minWidth: "18px",
-              },
-            }}
-          >
-            <ShoppingCartCheckoutOutlined fontSize="medium" />
-          </Badge>
-        </IconButton>
+          <ShoppingCartCheckoutOutlined fontSize="medium" />
+        </Badge>
+      </IconButton>
 
-        {openCart && (
-          <Box
-            onMouseEnter={() => setOpenCart(true)}
-            onMouseLeave={() => setOpenCart(false)}
-            sx={{
-              position: "absolute",
-              top: "100%",
-              right: 0,
-              bgcolor: "white",
-              boxShadow: 3,
-              p: 2,
-              minWidth: "220px",
-              minHeight: "150px",
-              borderRadius: 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 10,
-            }}
-          >
-            {cartCount > 0 ? (
-              <>
-                <Typography variant="subtitle2" sx={{ fontWeight: "bold", mb: 1 }}>
-                  You have {cartCount} item{cartCount > 1 ? "s" : ""} in your cart
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "12px",
-                    color: "primary.main",
-                    cursor: "pointer",
-                    "&:hover": { textDecoration: "underline" },
-                  }}
-                >
-                  View Cart
-                </Typography>
-              </>
-            ) : (
-              <>
-                <ProductionQuantityLimits sx={{ fontSize: "50px", color: "gray" }} />
-                <Typography sx={{ fontSize: "12px" }}>
-                  Shopping cart is empty
-                </Typography>
-              </>
-            )}
-          </Box>
-        )}
-      </Box>
+      {/* Drawer */}
+      <Drawer
+        anchor="right"
+        open={openCart}
+        onClose={handleToggleCart(false)}
+        PaperProps={{
+          sx: {
+            width: { xs: "80%", sm: 350 },
+            p: 2,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            zIndex: 4,
+          },
+        }}
+      >
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mt: 2,
+          }}
+        >
+          {cartCount > 0 ? (
+            <>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Your Cart
+              </Typography>
+              
+              {/* ✅ Map and send product data to CartProduct */}
+              {cartProducts.map((product, idx) => (
+                <Box key={idx} sx={{ mt: 2 }}>
+                  <CartProduct data={product} />
+                </Box>
+              ))}
+            </>
+          ) : (
+            <>
+              <ProductionQuantityLimits
+                sx={{ fontSize: 60, color: "gray", mb: 1 }}
+              />
+              <Typography sx={{ fontSize: 14, textAlign: "center" }}>
+                Your shopping cart is empty
+              </Typography>
+            </>
+          )}
+        </Box>
+      </Drawer>
     </Box>
   );
 };

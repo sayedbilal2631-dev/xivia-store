@@ -1,53 +1,80 @@
-import { 
-  collection, doc, getDocs, query, where, orderBy, limit, 
-  updateDoc, addDoc, getDoc, Timestamp, writeBatch, increment 
+import {
+  collection, doc, getDocs, query, where, orderBy, limit,
+  updateDoc, addDoc, getDoc, Timestamp, writeBatch, increment,
+  setDoc
 } from 'firebase/firestore';
-import { 
-  Store, StoreCategory,  Product, Order, 
-  OrderStatus, PaymentStatus, ProductStatus, ProductCategory 
+import {
+  Store, StoreCategory, Product, Order,
+  OrderStatus, PaymentStatus, ProductStatus, ProductCategory
 } from '@/app/collections/schema';
 import { db } from '@/app/config/firebase';
-// import { CreateStoreData } from '@/app/collections/store';
 
 export class StoreService {
-  // Create new store
- static async createStore(storeData: Partial<Store>): Promise<string> {
-  const storeRef = await addDoc(collection(db, 'stores'), {
-    ...storeData,
-    isVerified: false,
-    metrics: {
-      totalProducts: 0,
-      totalOrders: 0,
-      totalRevenue: 0,
-      averageRating: 0,
-      reviewCount: 0,
-    },
-    products: [],
-    createdAt: Timestamp.now(),
-    updatedAt: Timestamp.now(),
-  });
+  static async createStore(storeData: Partial<Store>): Promise<string> {
+    const storeRef = doc(collection(db, 'stores'));
 
-  return storeRef.id;
-}
+    await setDoc(storeRef, {
+      ...storeData,
+      isVerified: false,
+      metrics: {
+        totalProducts: 0,
+        totalOrders: 0,
+        totalRevenue: 0,
+        averageRating: 0,
+        reviewCount: 0,
+      },
+      products: [],
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    });
 
-
-  // Get store by ID
-  static async getStore(storeId: string): Promise<Store | null> {
-    const storeDoc = await getDoc(doc(db, 'stores', storeId));
-    return storeDoc.exists() ? { id: storeDoc.id, ...storeDoc.data() } as Store : null;
+    return storeRef.id;
   }
-  
+
+  // Get store
+  static async getStores(ownerId?: string): Promise<Store[]> {
+    try {
+      const storesRef = collection(db, 'stores');
+
+      const q = ownerId
+        ? query(storesRef, where('ownerId', '==', ownerId), orderBy('createdAt', 'desc'))
+        : query(storesRef, orderBy('createdAt', 'desc'));
+
+      const snapshot = await getDocs(q);
+
+      const stores: Store[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Store[];
+
+      return stores;
+    } catch (error) {
+      console.error('Error fetching stores:', error);
+      return [];
+    }
+  }
+
   // Get stores by owner
   static async getStoresByOwner(ownerId: string): Promise<Store[]> {
-    const q = query(
-      collection(db, 'stores'),
-      where('ownerId', '==', ownerId),
-      orderBy('createdAt', 'desc')
-    );
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Store));
+    try {
+      const storesRef = collection(db, "stores");
+
+      // Only apply `where` filter; remove orderBy unless you have an index for it
+      const q = query(storesRef, where("ownerId", "==", ownerId));
+
+      const snapshot = await getDocs(q);
+      const stores: Store[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Store[];
+
+      return stores;
+    } catch (error) {
+      console.error("Error fetching stores by owner:", error);
+      return [];
+    }
   }
-  
+
   // Get stores by category
   static async getStoresByCategory(category: StoreCategory, limitCount: number = 20): Promise<Store[]> {
     const q = query(
@@ -60,21 +87,21 @@ export class StoreService {
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Store));
   }
-  
+
   // Search stores
   static async searchStores(searchTerm: string): Promise<Store[]> {
     const storesRef = collection(db, 'stores');
     const snapshot = await getDocs(storesRef);
-    
+
     return snapshot.docs
       .map(doc => ({ id: doc.id, ...doc.data() } as Store))
-      .filter(store => 
+      .filter(store =>
         store.storeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         store.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         store.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
   }
-  
+
   // Update store metrics
   // static async updateStoreMetrics(storeId: string, updates: Partial<Store['metrics']>): Promise<void> {
   //   await updateDoc(doc(db, 'stores', storeId), {
@@ -82,7 +109,7 @@ export class StoreService {
   //     updatedAt: Timestamp.now()
   //   });
   // }
-  
+
   // Toggle store status
   static async toggleStoreStatus(storeId: string, isActive: boolean): Promise<void> {
     await updateDoc(doc(db, 'stores', storeId), {
@@ -90,7 +117,7 @@ export class StoreService {
       updatedAt: Timestamp.now()
     });
   }
-  
+
   // Get featured stores
   static async getFeaturedStores(limitCount: number = 10): Promise<Store[]> {
     const q = query(
@@ -104,53 +131,95 @@ export class StoreService {
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Store));
   }
 
-  // PRODUCT METHODS
-
   // Create product
-  static async createProduct(productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'metrics'>): Promise<string> {
-    const productRef = await addDoc(collection(db, 'products'), {
-      ...productData,
-      metrics: {
-        viewCount: 0,
-        purchaseCount: 0,
-        averageRating: 0,
-        reviewCount: 0
-      },
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    });
+  static async createProduct(
+    productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'metrics'>
+  ): Promise<string> {
+    try {
+      const productRef = await addDoc(collection(db, 'products'), {
+        ...productData,
+        metrics: {
+          viewCount: 0,
+          purchaseCount: 0,
+          averageRating: 0,
+          reviewCount: 0,
+        },
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      });
 
-    // Update store's product count
-    await updateDoc(productData.storeId, {
-      'metrics.totalProducts': increment(1)
-    });
+      // await updateDoc(doc(db, "stores"), {
+      //   "metrics.totalProducts": increment(1),
+      // });
 
-    return productRef.id;
+      return productRef.id;
+    } catch (error) {
+      console.error('Error creating product:', error);
+      throw new Error(`Failed to create product: ${error}`);
+    }
   }
 
+  static async getProductsByPrice(sortOrder: 'lowest' | 'highest') {
+    const useQuery = query(
+      collection(db, 'products'),
+      orderBy('price', sortOrder === 'lowest' ? 'asc' : 'desc')
+    );
+
+    const productsSnapshot = await getDocs(useQuery);
+    return productsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Product[];
+  }
+
+  // In your StoreService, add this method:
+  static async getProductsByDate(sortOrder: 'newest' | 'oldest') {
+    const useQuery = query(
+      collection(db, 'products'),
+      orderBy('createdAt', sortOrder === 'newest' ? 'desc' : 'asc')
+    );
+
+    const productsSnapshot = await getDocs(useQuery);
+    return productsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Product[];
+  }
   // Get product by ID
-  static async getProduct(productId: string): Promise<Product | null> {
-    const productDoc = await getDoc(doc(db, 'products', productId));
-    return productDoc.exists() ? { id: productDoc.id, ...productDoc.data() } as Product : null;
+  static async getUserProducts(userId: string): Promise<Product[]> {
+    const userProductsQuery = query(
+      collection(db, 'products'),
+      where('storeId', '==', userId)
+    );
+
+    const productsSnapshot = await getDocs(userProductsQuery);
+    return productsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Product[];
   }
 
   // Get products by store
   static async getProductsByStore(storeId: string, status?: ProductStatus): Promise<Product[]> {
     let q;
+    const productsRef = collection(db, 'products');
+
     if (status) {
       q = query(
-        collection(db, 'products'),
-        where('storeId', '==', doc(db, 'stores', storeId)),
+        productsRef,
+        where('storeId', '==', storeId),
         where('status', '==', status),
         orderBy('createdAt', 'desc')
       );
     } else {
       q = query(
         collection(db, 'products'),
-        where('storeId', '==', doc(db, 'stores', storeId)),
+        where('storeId', '==', storeId),
         orderBy('createdAt', 'desc')
       );
+
     }
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Product));
   }
@@ -335,10 +404,10 @@ export class StoreService {
     }
 
     const snapshot = await getDocs(q);
-    
+
     return snapshot.docs
       .map(doc => ({ id: doc.id, ...doc.data() } as Product))
-      .filter(product => 
+      .filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))

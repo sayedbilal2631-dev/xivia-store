@@ -4,11 +4,23 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "dummyjson.com", // external image host
+        hostname: "dummyjson.com",
       },
       {
         protocol: "https",
-        hostname: "cdn.dummyjson.com", // example of another allowed host
+        hostname: "cdn.dummyjson.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "plus.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "developers.google.com", 
       },
     ],
   },

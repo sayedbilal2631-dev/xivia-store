@@ -1,6 +1,6 @@
 import { CartProvider } from "./context/CartContext/CartContext";
+import DialogContext from "./context/CustomDialog/DialogContext";
 import { Geist, Geist_Mono } from "next/font/google";
-// import Navbar from "./components/common/Navbar/Navbar";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -24,13 +24,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isDarkmode: boolean = false;
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <CartProvider>
-          {/* <Navbar /> */}
-          {children}
-        </CartProvider>
+        <DialogContext>
+          <CartProvider>
+            {/* <Navbar /> */}
+            {children}
+          </CartProvider>
+        </DialogContext>
       </body>
     </html>
   );

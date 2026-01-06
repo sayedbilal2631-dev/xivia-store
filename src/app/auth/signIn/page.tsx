@@ -10,11 +10,13 @@ import {
   FacebookAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import AuthButton from "@/app/components/common/AuthButton";
+import AuthCard from "@/app/components/common/AuthCard";
+import MUIButton from "@/app/components/common/Button";
+import { colors } from "@/app/constants/colors";
 import { auth } from "@/app/config/firebase";
 import Link from "next/link";
-import AuthCard from "@/app/components/common/AuthCard";
-import AuthButton from "@/app/components/common/AuthButton";
-import MUIButton from "@/app/components/common/Button";
+import MUITextFieldEnhanced from "@/app/components/common/TextField";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -27,7 +29,7 @@ export default function SignInPage() {
     try {
       setLoading(true);
       await signInWithPopup(auth, new GoogleAuthProvider());
-      router.push("/dashboard");
+      router.push("/");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -39,7 +41,7 @@ export default function SignInPage() {
     try {
       setLoading(true);
       await signInWithPopup(auth, new FacebookAuthProvider());
-      router.push("/dashboard");
+      router.push("/");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -52,75 +54,79 @@ export default function SignInPage() {
     try {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard");
+      router.push("/");
     } catch {
       setError("Invalid email or password");
     } finally {
       setLoading(false);
     }
   };
-const nextPage = () => {
-  router.push('/auth/signUp')
-}
+  const nextPage = () => {
+    router.push('/auth/signUp')
+  }
   return (
-    <AuthCard title="Sign in" subtitle="Use your last sign-in method">
-      <AuthButton
-        icon={<Google />}
-        label="Continue with Google"
-        onClick={handleGoogleSignIn}
-      />
-      <AuthButton
-        icon={<Facebook />}
-        label="Continue with Facebook"
-        onClick={handleFacebookSignIn}
-      />
-      <AuthButton icon={<LinkedIn />} label="Continue with LinkedIn" disabled />
+    <Box>
+      <Box sx={{backgroundColor:colors.accent, width:'100%'}}>
+        <Link href={'/'} style={{  fontSize:'50px', fontWeight:'bold', textDecoration: 'none',color:colors.darkBackground, padding: '20px' }} >Store</Link>
+      </Box>
 
-      <Divider sx={{ my: 2 }}>OR</Divider>
-
-      <form onSubmit={handleEmailSignIn}>
-        <TextField
-          fullWidth
-          type="email"
-          label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          sx={{ mb: 2 }}
-          required
-        />
-        <TextField
-          fullWidth
-          type="password"
-          label="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          sx={{ mb: 2 }}
-          required
+      <AuthCard title="Sign in" subtitle="Use your last sign-in method">
+        <AuthButton
+          icon={<Google />}
+          label="Continue with Google"
+          onClick={handleGoogleSignIn}
         />
         <AuthButton
-          type="submit"
-          variant="contained"
-          label="Continue with email"
-          loading={loading}
-          color="#ff6a00"
+          icon={<Facebook />}
+          label="Continue with Facebook"
+          onClick={handleFacebookSignIn}
         />
-      </form>
+        <AuthButton icon={<LinkedIn />} label="Continue with LinkedIn" disabled />
 
-      {error && (
-        <Typography color="error" variant="body2" sx={{ mt: 2 }}>
-          {error}
-        </Typography>
-      )}
+        <Divider sx={{ my: 2 }}>OR</Divider>
 
-      <Box sx={{display:'flex', alignItems:'center', justifyContent:'center', mt:3}}>
-        <Typography variant="body2" >
-          New to Xivia Store?{" "}
+        <form onSubmit={handleEmailSignIn}>
+          <MUITextFieldEnhanced
+            fullWidth
+            type="email"
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <MUITextFieldEnhanced
+            fullWidth
+            type="password"
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <AuthButton
+            type="submit"
+            variant="contained"
+            label="Continue with email"
+            loading={loading}
+            color="#ff6a00"
+          />
+        </form>
 
-        </Typography>
-        <MUIButton variant="text" color="warning" onClick={nextPage}>
-          Create new account
-        </MUIButton>
-      </Box>
-    </AuthCard>
+        {error && (
+          <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
+        )}
+
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 3 }}>
+          <Typography variant="body2" >
+            New to Xivia Store?{" "}
+
+          </Typography>
+          <MUIButton variant="text" color="warning" onClick={nextPage}>
+            Create new account
+          </MUIButton>
+        </Box>
+      </AuthCard>
+    </Box>
   );
 }
