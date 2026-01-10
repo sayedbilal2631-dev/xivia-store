@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent,  } from "@mui/material";
+import {  Dialog, DialogActions, DialogContent, } from "@mui/material";
 import { colors } from "@/app/constants/colors";
 import AuthButton from "../common/AuthButton";
 import React from "react";
@@ -17,54 +17,54 @@ const CustomDialog = ({
     btnTitle
 }: CustomDialogProps) => {
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            fullWidth
-            sx={{
-                "& .MuiPaper-root": {
-                    backgroundColor: colors.surface,
-                    borderRadius: "16px",
-                    width: "100%",
-                    padding: { md: "40px", sm: "30px", xs: "20px" },
-                    margin: 0,
-                },
-            }}
-        >
-
-            {/* Content */}
-            <DialogContent
+            <Dialog
+                open={open}
+                onClose={onClose}
+                fullWidth
                 sx={{
-                    width: "100%",
-                    padding: 0,
-                    mt: 1,
-                    "&::-webkit-scrollbar": { width: "6px" },
-                    "&::-webkit-scrollbar-track": {
-                        background: colors.surface,
-                        borderRadius: "8px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                        background: colors.border,
-                        borderRadius: "8px",
-                    },
-                    "&::-webkit-scrollbar-thumb:hover": {
-                        background: colors.secondary,
+                    "& .MuiPaper-root": {
+                        backgroundColor: colors.surface,
+                        borderRadius: "16px",
+                        width: "100%",
+                        padding: { md: "40px", sm: "30px", xs: "20px" },
+                        margin: 0,
                     },
                 }}
             >
-                {children}
-            </DialogContent>
 
-            {/* Actions */}
-            <DialogActions>
-                <AuthButton
-                    onClick={onClose}
-                    label={btnTitle}
-                    variant="contained"
-                    width="100px"
-                />
-            </DialogActions>
-        </Dialog>
+                {/* Content */}
+                <DialogContent
+                    sx={{
+                        width: "100%",
+                        padding: 0,
+                        mt: 1,
+                        "&::-webkit-scrollbar": { width: "6px" },
+                        "&::-webkit-scrollbar-track": {
+                            background: colors.surface,
+                            borderRadius: "8px",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                            background: colors.border,
+                            borderRadius: "8px",
+                        },
+                        "&::-webkit-scrollbar-thumb:hover": {
+                            background: colors.secondary,
+                        },
+                    }}
+                >
+                    {children}
+                </DialogContent>
+
+                {/* Actions */}
+                <DialogActions>
+                    <AuthButton
+                        onClick={onClose}
+                        label={btnTitle}
+                        variant="contained"
+                        width="100px"
+                    />
+                </DialogActions>
+            </Dialog>
     );
 };
 

@@ -3,6 +3,7 @@ import DialogContext from "./context/CustomDialog/DialogContext";
 import { Geist, Geist_Mono } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
+import { UserProvider } from "./context/CurrentUser/CurrentUser";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +30,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <DialogContext>
-          <CartProvider>
-            {/* <Navbar /> */}
-            {children}
-          </CartProvider>
+          <UserProvider>
+            <CartProvider>
+              {/* <Navbar /> */}
+              {children}
+            </CartProvider>
+          </UserProvider>
         </DialogContext>
       </body>
     </html>

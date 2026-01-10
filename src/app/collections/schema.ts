@@ -131,7 +131,7 @@ export type ProductStatus = 'active' | 'inactive' | 'out-of-stock' | 'discontinu
 
 // Product Interface
 export interface Product {
-  id: string;
+  id: string | any;
   storeId: string;
   name: string;
   description: string;

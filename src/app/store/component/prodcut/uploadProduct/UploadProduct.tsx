@@ -1,26 +1,13 @@
 "use client";
-
-import React from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  Switch,
-  FormControlLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Typography, Switch, FormControlLabel, MenuItem, Select, } from "@mui/material";
+import { StoreService } from "@/app/lib/services/store-services/storeServices";
 import { useForm, Controller, DefaultValues } from "react-hook-form";
 import MUITextFieldEnhanced from "@/app/components/common/TextField";
-import { useRouter } from "next/navigation";
-import { StoreService } from "@/app/lib/services/store-services/storeServices";
 import useCurrentUser from "@/app/hooks/getCurrentUser";
 import { ProductFormData } from "@/app/collections/types";
 import { STORE_CATEGORIES } from "@/app/constants/store";
-
+import { useRouter } from "next/navigation";
+import React from "react";
 
 const defaultValues: ProductFormData = {
   name: "",
@@ -76,6 +63,7 @@ const CreateProductForm = ({ open, setOpen }: any) => {
       alert("Failed to create product. Check console for details.");
     }
   };
+  console.log(open, setOpen)
   return (
     <Box display="flex" justifyContent="center" py={4}>
       <Box

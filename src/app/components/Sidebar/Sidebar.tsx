@@ -1,9 +1,11 @@
 "use client";
 
-import { Category, Checkroom, Devices, Home, DirectionsCar, Toys, FitnessCenter, HealthAndSafety, Construction, LocalShipping, Laptop, Restaurant,
+import {
+  Category, Checkroom, Devices, Home, DirectionsCar, Toys, FitnessCenter, HealthAndSafety, Construction, LocalShipping, Laptop, Restaurant,
 } from "@mui/icons-material";
 import { ReactElement, useState } from "react";
 import { Box, Typography } from "@mui/material";
+import { useUser } from "@/app/context/CurrentUser/CurrentUser";
 
 interface CategoryItem {
   id: number;
@@ -33,7 +35,8 @@ export const categories: CategoryItem[] = [
 // Sidebar
 const Sidebar = () => {
   const [current, setCurrent] = useState<[number, string]>(currentGlobal);
-
+  const { ownerId } = useUser();
+  console.log(ownerId)
   const handleClick = (item: CategoryItem) => {
     const newValue: [number, string] = [item.id, item.name];
     setCurrent(newValue);

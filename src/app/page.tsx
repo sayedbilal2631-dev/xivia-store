@@ -1,5 +1,5 @@
-import { Box, Container, Grid } from '@mui/material'
 import Sidebar from './components/Sidebar/Sidebar'
+import { Box, Container, } from '@mui/material'
 import Navbar from './components/Navbar/Navbar'
 import Products from './products/Products'
 
@@ -12,7 +12,7 @@ const page = () => {
       </Box>
       <Container maxWidth={'xl'}>
         <Box sx={{ display: 'flex', my: 3, width: '100%', }}>
-          <Box sx={{position:'fixed'}} flex={'1'}>
+          <Box  flex={'1'}>
             <Sidebar />
           </Box>
           <Box flex={'4'}>

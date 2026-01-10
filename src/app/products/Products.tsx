@@ -1,54 +1,48 @@
 "use client";
 
+import { FirebaseServices } from "../services/firebase/Firebase";
 import GlobalCard from "../components/common/globalCard";
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
+import { Product } from "../collections/schema";
 
-interface Product {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    thumbnail: string;
-    [key: string]: any;
-}
-
-
+// interface Product {
+//     id: string;
+//     title: string;
+//     price: number;
+//     description: string;
+//     thumbnail: string;
+//     category?: string;
+// }
 
 const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
-    const [categories, setCategories] = useState<string[]>([]);
 
-    // Fetch categories
     useEffect(() => {
-        fetch("https://dummyjson.com/products/categories")
-            .then((res) => res.json())
-            .then((data) => {
-                setCategories(data);
-            })
-            .catch((err) => console.error("Error fetching categories:", err));
+        const fetchProducts = async () => {
+            try {
+                const data = await FirebaseServices.getAllProducts();
+                setProducts(data);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+
+        fetchProducts();
     }, []);
 
-    // Fetch products
-    useEffect(() => {
-        fetch("https://dummyjson.com/products")
-            .then((res) => res.json())
-            .then((data) => setProducts(data.products))
-            .catch((err) => console.error("Error fetching products:", err));
-    }, []);
-
-    let cate = products.map((item) => item.category)
-    let filter = products.filter((item)=> item.category === "beauty");
     return (
         <Grid container spacing={2}>
             {products.map((product) => (
-                <Grid  key={product.id} size={{ lg: 3, md:4, sm: 6, xs: 12 }}>
+                <Grid
+                    key={product.id}
+                    size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+                >
                     <GlobalCard data={product} />
                 </Grid>
             ))}
         </Grid>
     );
-
 };
 
 export default Products;

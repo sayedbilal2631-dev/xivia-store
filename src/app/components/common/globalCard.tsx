@@ -25,12 +25,12 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
     setWishlisted(!wishlisted);
   };
 
-  const discount = data.discountPercentage
-    ? Math.round(data.discountPercentage)
-    : 0;
-  const originalPrice =
-    discount > 0 ? (data.price / (1 - discount / 100)).toFixed(2) : null;
-  const title = data.title.split(" ").slice(0, 2).join(" ");
+  // const discount = data.discountPercentage
+  //   ? Math.round(data.discountPercentage)
+  //   : 0;
+  // const originalPrice =
+  //   discount > 0 ? (data.price / (1 - discount / 100)).toFixed(2) : null;
+  // const title = data.title.split(" ").slice(0, 2).join(" ");
 
   return (
     <Card
@@ -163,7 +163,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             lineHeight: 1.3,
           }}
         >
-          {title}
+          {/* {title} */}
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
@@ -187,15 +187,15 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             <Typography variant="h6" color="primary" fontWeight="bold">
               ${data.price}
             </Typography>
-            {originalPrice && (
+            {/* {originalPrice && ( */}
               <Typography
                 variant="body2"
                 color="text.secondary"
                 sx={{ textDecoration: "line-through" }}
               >
-                ${originalPrice}
+                {/* ${originalPrice} */}
               </Typography>
-            )}
+            {/* )} */}
           </Box>
 
           <IconButton

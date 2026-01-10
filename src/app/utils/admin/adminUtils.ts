@@ -1,4 +1,3 @@
-// import { FirestoreService } from "@/app/lib/services/firestoreservices/fireStore";
 
 // export class AdminUtils {
 //   // Bulk update product prices

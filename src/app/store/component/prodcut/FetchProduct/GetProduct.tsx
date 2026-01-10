@@ -60,9 +60,9 @@ const GetProduct = ({ filter }: { filter: string }) => {
                 <Typography>No products found.</Typography>
             ) : (
                 <Grid container spacing={'10px'}>
-                    {products.map((product) => (
-                        <Grid size={{ xs: 6, sm: 4, md: 3 }}>
-                                <ShowProduct key={product.id} data={product} />
+                    {products.map((product, idx) => (
+                        <Grid key={idx} size={{ xs: 6, sm: 4, md: 3 }}>
+                            <ShowProduct key={product.id} data={product} />
                         </Grid>
                     ))}
                 </Grid>
