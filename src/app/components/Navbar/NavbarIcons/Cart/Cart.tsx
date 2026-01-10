@@ -5,7 +5,6 @@ import {
   Typography,
   Badge,
   Drawer,
-  Button,
 } from "@mui/material";
 import {
   ProductionQuantityLimits,
@@ -17,7 +16,7 @@ import CartProduct from "./CartProduct";
 
 const Cart = () => {
   const [openCart, setOpenCart] = useState(false);
-  const { cartItems, cartCount, clearCart } = useCart();
+  const { cartItems, cartCount,  } = useCart();
   const [cartProducts, setCartProducts] = useState<any[]>([]);
 
   const handleToggleCart = (state: boolean) => () => {

@@ -1,5 +1,5 @@
 'use client'
-import { Box, Input, TextField, InputAdornment } from "@mui/material";
+import { Box, TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 

@@ -4,9 +4,8 @@ import {
   ImageFiles, 
   ImagePreviews, 
   CreateStoreData,
-  StoreCategory 
 } from '@/app/collections/store';
-import { STORE_CATEGORIES, IMAGE_UPLOAD_CONFIG } from '@/app/constants/store';
+import {  IMAGE_UPLOAD_CONFIG } from '@/app/constants/store';
 
 export const useStoreForm = (userEmail: string, userId: string) => {
   const [formData, setFormData] = useState<StoreFormData>({

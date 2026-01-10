@@ -1,5 +1,5 @@
 // app/hooks/useCurrentUser.ts
-import { useState, useEffect, useId } from "react";
+import { useState, useEffect, } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "../config/firebase";
 

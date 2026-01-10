@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Box, Typography, Divider, Paper, Button } from "@mui/material";
-import { Google, Facebook } from "@mui/icons-material";
+import {  Facebook } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,

@@ -3,7 +3,6 @@ import {
     Box,
     Typography,
     CircularProgress,
-    Grid,
     Card,
     Chip,
     Rating,

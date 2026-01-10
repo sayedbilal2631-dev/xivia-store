@@ -25,7 +25,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isDarkmode: boolean = false;
+  // const isDarkmode: boolean = false;
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>

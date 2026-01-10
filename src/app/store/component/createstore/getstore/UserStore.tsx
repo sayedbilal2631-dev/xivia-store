@@ -10,10 +10,10 @@ import React, { useEffect, useState } from "react";
 import MUIButton from "@/app/components/common/Button";
 import CreateStoreForm from "../CreateStoreForm/CreateStore";
 
-interface UserStoreProps {
-    open?: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface UserStoreProps {
+//     open?: boolean;
+//     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
 const UserStore = ({ open, setOpen }: any) => {
     const [store, setStore] = useState<Store | null>(null);

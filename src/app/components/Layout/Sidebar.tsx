@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Drawer,
   List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -35,7 +34,7 @@ const menuItems = [
   { text: 'Store Settings', path: '/settings', icon: <SettingsIcon /> },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({ open,  }) => {
   const [active, setActive] = useState<string>('Dashboard')
   const handleChange = (item:string) => {
        setActive(item)

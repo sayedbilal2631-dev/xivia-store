@@ -19,7 +19,7 @@ const User = () => {
     const [open, setOpen] = useState(false)
     const user = getCurrentUser();
     const router = useRouter();
-    const { name, email, createdAt } = user || {};
+    const { name} = user || {};
     const userInfo = [
         { name: 'My Store', path: '/store', icon: <StoreIcon /> },
         { name: 'My Orders', path: '#', icon: <ShoppingBagIcon /> },

@@ -2,7 +2,6 @@
 import useCurrentUser from '../hooks/getCurrentUser'
 import { Box, Typography } from '@mui/material';
 import React from 'react'
-import { useUser } from '../context/CurrentUser/CurrentUser';
 
 interface user {
   name: string,
@@ -12,8 +11,6 @@ interface user {
 const page = () => {
   const user = useCurrentUser()
   const { name, email, createdAt }: user = user || {};
-  const {ownerId} = useUser()
-  console.log(ownerId)
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: 2 }}>
       <Box sx={{ width: '60%' }}>

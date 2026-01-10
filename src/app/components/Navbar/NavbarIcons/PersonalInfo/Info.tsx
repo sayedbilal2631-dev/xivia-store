@@ -1,8 +1,8 @@
 "use client"
-import { Box, IconButton, Typography } from "@mui/material";
 import useCurrentUser from "@/app/hooks/getCurrentUser";
 import { auth } from "@/app/config/firebase";
 import { signOut } from "firebase/auth";
+import { Box} from "@mui/material";
 import Link from "next/link";
 
 const Info = ({ data }: any) => {
