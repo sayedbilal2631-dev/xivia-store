@@ -1,13 +1,17 @@
 "use client";
-import {Box, Card, CardContent, Typography, Rating, IconButton, Button,} from "@mui/material";
+import { Box, Card, CardContent, Typography, Rating, IconButton, Button, } from "@mui/material";
+import { getOrCreateConversation, sendMessage } from "@/app/services/messaging";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useCart } from "@/app/context/CartContext/CartContext";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import ChatIcon from "@mui/icons-material/Chat";
+import { auth } from "@/app/config/firebase";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+
 
 interface GlobalCardProps {
   data: any;
@@ -16,8 +20,10 @@ interface GlobalCardProps {
 const GlobalCard = ({ data }: GlobalCardProps) => {
   const [hovered, setHovered] = useState<number | null>(null);
   const [wishlisted, setWishlisted] = useState(false);
+
   const router = useRouter();
   const { addToCart } = useCart();
+
   const goToProduct = (id: number) => router.push(`/products/${id}`);
 
   const handleWishlist = (e: React.MouseEvent) => {
@@ -25,12 +31,25 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
     setWishlisted(!wishlisted);
   };
 
-  // const discount = data.discountPercentage
-  //   ? Math.round(data.discountPercentage)
-  //   : 0;
-  // const originalPrice =
-  //   discount > 0 ? (data.price / (1 - discount / 100)).toFixed(2) : null;
-  // const title = data.title.split(" ").slice(0, 2).join(" ");
+  const handleAskPrice = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const user = auth.currentUser;
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    const conversationId = await getOrCreateConversation(data, user.uid);
+
+    await sendMessage(
+      conversationId,
+      user.uid,
+      "Hi, I am interested in this product. Can you confirm the price?"
+    );
+
+    router.push(`/store/pages/messages/${conversationId}`);
+  };
 
   return (
     <Card
@@ -55,7 +74,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
       <Box sx={{ position: "relative", overflow: "hidden", height: 250 }}>
         <Image
           src={
-            hovered === data.id && data.images[1]
+            hovered === data.id && data.images?.[1]
               ? data.images[1]
               : data.thumbnail
           }
@@ -70,7 +89,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
           }}
         />
 
-        {/* Hover Overlay - Quick View Button */}
+        {/* Hover Overlay */}
         <Box
           sx={{
             position: "absolute",
@@ -163,60 +182,74 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             lineHeight: 1.3,
           }}
         >
-          {/* {title} */}
+          {data.title}
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-          <Rating value={data.rating || 4} size="small" readOnly precision={0.5} />
+          <Rating
+            value={data.rating || 4}
+            size="small"
+            readOnly
+            precision={0.5}
+          />
           <Typography variant="caption" color="text.secondary">
             ({data.rating || "4.0"})
           </Typography>
         </Box>
 
-        {/* Price & Cart */}
+        {/* Price + Actions */}
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: 1,
             mt: 1.5,
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Typography variant="h6" color="primary" fontWeight="bold">
-              ${data.price}
-            </Typography>
-            {/* {originalPrice && ( */}
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ textDecoration: "line-through" }}
-              >
-                {/* ${originalPrice} */}
-              </Typography>
-            {/* )} */}
-          </Box>
+          <Typography variant="h6" color="primary" fontWeight="bold">
+            ${data.price}
+          </Typography>
 
-          <IconButton
-            sx={{
-              bgcolor: "white",
-              color: "primary.main",
-              "&:hover": {
-                bgcolor: "primary.main",
-                color: "white",
-                transform: "scale(1.1)",
-              },
-              transition: "all 0.3s ease",
-              boxShadow: 2,
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              addToCart(data.id);
-            }}
-          >
-            <ShoppingCartIcon />
-          </IconButton>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            {/* Ask Price */}
+            <IconButton
+              onClick={handleAskPrice}
+              sx={{
+                bgcolor: "white",
+                color: "secondary.main",
+                "&:hover": {
+                  bgcolor: "secondary.main",
+                  color: "white",
+                  transform: "scale(1.1)",
+                },
+                transition: "all 0.3s ease",
+                boxShadow: 2,
+              }}
+            >
+              <ChatIcon />
+            </IconButton>
+
+            {/* Add to Cart */}
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(data.id);
+              }}
+              sx={{
+                bgcolor: "white",
+                color: "primary.main",
+                "&:hover": {
+                  bgcolor: "primary.main",
+                  color: "white",
+                  transform: "scale(1.1)",
+                },
+                transition: "all 0.3s ease",
+                boxShadow: 2,
+              }}
+            >
+              <ShoppingCartIcon />
+            </IconButton>
+          </Box>
         </Box>
       </CardContent>
     </Card>

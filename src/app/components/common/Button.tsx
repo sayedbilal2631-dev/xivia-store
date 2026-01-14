@@ -3,7 +3,7 @@ import { Button, CircularProgress } from "@mui/material";
 import { MUIButtonProps } from "@/app/collections/types";
 import React from "react";
 
-const MUIButton: React.FC<MUIButtonProps> = ({
+const CustomButton: React.FC<MUIButtonProps> = ({
   children,
   variant = "contained",
   color = "primary",
@@ -14,7 +14,8 @@ const MUIButton: React.FC<MUIButtonProps> = ({
   onClick,
   type = "button",
   bgColor,
-  buttonType = "default", 
+  buttonType = "default",
+  height
 }) => {
 
   // 🔥 Custom Styles Map
@@ -97,11 +98,13 @@ const MUIButton: React.FC<MUIButtonProps> = ({
       startIcon={!isLoading && startIcon}
       endIcon={!isLoading && endIcon}
       sx={{
+        height: { height },
         textTransform: "none",
         fontWeight: 500,
         mx: 1,
         borderRadius: 2,
-        ...styles[buttonType], 
+        whiteSpace: 'nowrap',
+        ...styles[buttonType],
       }}
     >
       {isLoading ? <CircularProgress size={22} color="inherit" /> : children}
@@ -109,4 +112,4 @@ const MUIButton: React.FC<MUIButtonProps> = ({
   );
 };
 
-export default MUIButton;
+export default CustomButton;

@@ -1,27 +1,40 @@
-import Sidebar from './components/Sidebar/Sidebar'
-import { Box, Container, } from '@mui/material'
-import Navbar from './components/Navbar/Navbar'
-import Products from './products/Products'
+'use client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Sidebar from './components/Sidebar/Sidebar';
+import Navbar from './components/Navbar/Navbar';
+import { Box, Container } from '@mui/material';
+import Products from './products/Products';
+import { useState } from 'react';
 
-const page = () => {
+const Page = () => {
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-      <Box sx={{ width: '100%' }}>
-        <Navbar />
-      </Box>
-      <Container maxWidth={'xl'}>
-        <Box sx={{ display: 'flex', my: 3, width: '100%', }}>
-          <Box  flex={'1'}>
-            <Sidebar />
-          </Box>
-          <Box flex={'4'}>
-            <Products />
-          </Box>
+    <QueryClientProvider client={queryClient}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Box sx={{ width: '100%' }}>
+          <Navbar />
         </Box>
-      </Container>
-    </Box>
-  )
-}
+        <Container maxWidth="xl">
+          <Box sx={{ display: 'flex', my: 3, width: '100%' }}>
+            <Box flex={1}>
+              <Sidebar />
+            </Box>
+            <Box flex={4}>
+              <Products />
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+    </QueryClientProvider>
+  );
+};
 
-export default page
+export default Page;

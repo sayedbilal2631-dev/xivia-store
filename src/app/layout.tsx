@@ -1,9 +1,10 @@
+import ReactQueryProvider from "./components/ReactQueryProvider/ReactQueryProvider";
 import { CartProvider } from "./context/CartContext/CartContext";
 import DialogContext from "./context/CustomDialog/DialogContext";
+import { UserProvider } from "./context/CurrentUser/CurrentUser";
 import { Geist, Geist_Mono } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
-import { UserProvider } from "./context/CurrentUser/CurrentUser";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,14 +30,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <DialogContext>
-          <UserProvider>
-            <CartProvider>
-              {/* <Navbar /> */}
-              {children}
-            </CartProvider>
-          </UserProvider>
-        </DialogContext>
+        <ReactQueryProvider>
+          <DialogContext>
+            <UserProvider>
+              <CartProvider>
+                {/* <Navbar /> */}
+                {children}
+              </CartProvider>
+            </UserProvider>
+          </DialogContext>
+        </ReactQueryProvider>
       </body>
     </html>
   );

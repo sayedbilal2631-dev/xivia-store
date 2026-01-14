@@ -61,7 +61,7 @@ const GetProduct = ({ filter }: { filter: string }) => {
             ) : (
                 <Grid container spacing={'10px'}>
                     {products.map((product, idx) => (
-                        <Grid key={idx} size={{ xs: 6, sm: 4, md: 3 }}>
+                        <Grid key={idx} size={{ xs: 6, sm: 6, md: 4 }}>
                             <ShowProduct key={product.id} data={product} />
                         </Grid>
                     ))}

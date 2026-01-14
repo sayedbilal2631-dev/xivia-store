@@ -1,5 +1,14 @@
 import { StoreCategory } from '@/app/collections/store';
-
+import {
+  Dashboard,
+  MailOutline,
+  ShoppingCart,
+  Payments,
+  BookmarkBorder,
+  LocalShipping,
+  Layers,
+  Settings,
+} from "@mui/icons-material";
 export const STORE_CATEGORIES = [
   { value: 'fashion' as StoreCategory, label: 'Fashion & Apparel' },
   { value: 'electronics' as StoreCategory, label: 'Electronics' },
@@ -19,3 +28,30 @@ export const IMAGE_UPLOAD_CONFIG = {
   BANNER_RECOMMENDED_SIZE: '1200x300px',
   STORE_IMAGES_RECOMMENDED_SIZE: '800x600px',
 };
+
+
+export const sidebarSections = [
+  {
+    title: "Online trading",
+    items: [
+      { label: "Dashboard", href: "/store", icon: Dashboard },
+      { label: "Messages", href: "/store/pages/messages", icon: MailOutline },
+      { label: "Orders", href: "/store/pages/orders", icon: ShoppingCart },
+      { label: "Payment", href: "/store/pages/payment", icon: Payments },
+      { label: "Saved & history", href: "/store/pages/saved", icon: BookmarkBorder },
+    ],
+  },
+  // {
+  //   title: "Add-on services",
+  //   items: [
+  //     { label: "Logistics services", href: "/store/pages/logistics", icon: LocalShipping },
+  //     { label: "Dropshipping", href: "/store/pages/dropshipping", icon: Layers },
+  //   ],
+  // },
+  {
+    title: "Settings",
+    items: [
+      { label: "Account settings", href: "/store/pages/settings", icon: Settings },
+    ],
+  },
+];

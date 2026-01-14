@@ -1,16 +1,6 @@
 "use client";
 import {
-    Box,
-    Typography,
-    CircularProgress,
-    Card,
-    Chip,
-    Rating,
-    Button,
-    Container,
-    Stack,
-    Breadcrumbs,
-    TextField,
+    Box, Typography, CircularProgress, Card, Chip, Rating, Button, Container, Stack, Breadcrumbs, TextField,
 } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -44,7 +34,6 @@ const ProductDetails = () => {
     const [order, setOrder] = useState<number>(1);
     const router = useRouter();
     const { id } = useParams();
-    const { addToCart } = useCart();
     useEffect(() => {
         if (id) {
             fetch(`https://dummyjson.com/products/${id}`)
@@ -198,7 +187,7 @@ const ProductDetails = () => {
                                             height={80}
                                             style={{
                                                 objectFit: "cover",
-                                            
+
                                             }}
                                         />
                                     </Box>

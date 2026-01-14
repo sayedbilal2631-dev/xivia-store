@@ -19,7 +19,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Analytics safely (works only in browser)
 let analytics = null;
 if (typeof window !== "undefined") {
   isSupported().then((yes) => {

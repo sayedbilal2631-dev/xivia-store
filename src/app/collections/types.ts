@@ -112,6 +112,7 @@ export interface MUIButtonProps {
   width?:number
   bgColor?:any
   buttonType?:any
+  height?:any
 }
 
 

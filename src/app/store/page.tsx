@@ -1,20 +1,23 @@
-import UserStore from './component/createstore/getstore/UserStore'
-import { Box, Container } from '@mui/material'
-import { colors } from '../constants/colors'
-import React from 'react'
+import React from "react";
+import { Box, Container } from "@mui/material";
+import UserStore from "./component/createstore/getstore/UserStore";
 
 const page = () => {
-
   return (
     <>
-      <Box sx={{ height: '80px', width: '100%', backgroundColor: colors.accent }}></Box>
-      <Container maxWidth={'xl'}>
-        <Box sx={{ width: { xs: '95%', md: '90%' }, margin: 'auto' }}>
-          <UserStore  />
+     
+        {/* Page Content */}
+        <Box sx={{ flex: 1 }}>
+          <Container maxWidth="xl">
+            <Box
+              sx={{ width: { xs: "95%", md: "90%" }, margin: "auto", py: 3, }}
+            >
+              <UserStore />
+            </Box>
+          </Container>
         </Box>
-      </Container>
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;
