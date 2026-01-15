@@ -1,75 +1,85 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState, ReactNode, } from "react";
+
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/app/config/firebase";
-import { db } from "@/app/config/firebase";
-
+import { auth, db } from "@/app/config/firebase";
 
 interface UserContextType {
-    isUser: boolean;
-    loading: boolean;
-    ownerId: string | null;
-    firebaseUser: User | null;
+  isUser: boolean;
+  loading: boolean;
+  ownerId: string | null;
+  firebaseUser: User | null;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-    const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
-    const [ownerId, setOwnerId] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+  const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
+  const [ownerId, setOwnerId] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                setFirebaseUser(null);
-                setOwnerId(null);
-                setLoading(false);
-                return;
-            }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
 
-            setFirebaseUser(user);
+      if (!user) {
+        setFirebaseUser(null);
+        setOwnerId(null);
+        setLoading(false);
+        return;
+      }
 
-            const q = query(
-                collection(db, "stores"),
-                where("ownerId", "==", user.uid)
-            );
+      setFirebaseUser(user);
 
-            const snapshot = await getDocs(q);
+      try {
+        const q = query(
+          collection(db, "stores"),
+          where("ownerId", "==", user.uid)
+        );
 
-            if (!snapshot.empty) {
-                setOwnerId(snapshot.docs[0].id);
-            } else {
-                setOwnerId(null);
-            }
+        const snapshot = await getDocs(q);
 
-            setLoading(false);
-        });
+        if (!snapshot.empty) {
+          setOwnerId(snapshot.docs[0].id);
+        } else {
+          setOwnerId(null);
+        }
+      } catch (error) {
+        console.error("Error fetching store owner:", error);
+        setOwnerId(null);
+      } finally {
+        setLoading(false);
+      }
+    });
 
-        return () => unsubscribe();
-    }, []);
+    return () => unsubscribe();
+  }, []);
 
-    return (
-        <UserContext.Provider
-            value={{
-                isUser: !!firebaseUser,
-                loading,
-                ownerId,
-                firebaseUser,
-            }}
-        >
-            {children}
-        </UserContext.Provider>
-    );
+  return (
+    <UserContext.Provider
+      value={{
+        isUser: Boolean(firebaseUser),
+        loading,
+        ownerId,
+        firebaseUser,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 };
 
-
 export const useUser = () => {
-    const context = useContext(UserContext);
-    if (context === undefined) {
-        throw new Error("useUser must be used within UserProvider");
-    }
-    return context;
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUser must be used within UserProvider");
+  }
+  return context;
 };

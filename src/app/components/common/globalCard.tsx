@@ -1,17 +1,17 @@
 "use client";
+
 import { Box, Card, CardContent, Typography, Rating, IconButton, Button, } from "@mui/material";
-import { getOrCreateConversation, sendMessage } from "@/app/services/messaging";
+import { getOrCreateConversation } from "@/app/services/messages/messagingServices";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useCart } from "@/app/context/CartContext/CartContext";
+import { useUser } from "@/app/context/CurrentUser/CurrentUser";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
-import { auth } from "@/app/config/firebase";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-
 
 interface GlobalCardProps {
   data: any;
@@ -23,32 +23,35 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
 
   const router = useRouter();
   const { addToCart } = useCart();
+  const { firebaseUser, loading } = useUser();
 
   const goToProduct = (id: number) => router.push(`/products/${id}`);
 
   const handleWishlist = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setWishlisted(!wishlisted);
+    setWishlisted((prev) => !prev);
   };
 
   const handleAskPrice = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    const user = auth.currentUser;
-    if (!user) {
+    if (loading) return;
+
+    if (!firebaseUser) {
       router.push("/login");
       return;
     }
 
-    const conversationId = await getOrCreateConversation(data, user.uid);
+    try {
+      const conversationId = await getOrCreateConversation(
+        data,
+        firebaseUser.uid
+      );
 
-    await sendMessage(
-      conversationId,
-      user.uid,
-      "Hi, I am interested in this product. Can you confirm the price?"
-    );
-
-    router.push(`/store/pages/messages/${conversationId}`);
+      router.push(`/store/pages/messages/${conversationId}`);
+    } catch (error) {
+      console.error("Failed to create conversation:", error);
+    }
   };
 
   return (
@@ -118,7 +121,6 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
                 background: "white",
                 transform: "translateY(-2px)",
               },
-              transition: "all 0.3s ease",
             }}
             onClick={(e) => {
               e.stopPropagation();
@@ -135,9 +137,6 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             position: "absolute",
             top: 10,
             right: 10,
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
           }}
         >
           <IconButton
@@ -150,7 +149,6 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
                 color: "red",
                 transform: "scale(1.1)",
               },
-              transition: "all 0.3s ease",
               boxShadow: 2,
             }}
           >
@@ -186,12 +184,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-          <Rating
-            value={data.rating || 4}
-            size="small"
-            readOnly
-            precision={0.5}
-          />
+          <Rating value={data.rating || 4} size="small" readOnly />
           <Typography variant="caption" color="text.secondary">
             ({data.rating || "4.0"})
           </Typography>
@@ -211,9 +204,10 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
           </Typography>
 
           <Box sx={{ display: "flex", gap: 1 }}>
-            {/* Ask Price */}
+            {/* Chat / Ask Price */}
             <IconButton
               onClick={handleAskPrice}
+              disabled={loading}
               sx={{
                 bgcolor: "white",
                 color: "secondary.main",
@@ -222,7 +216,6 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
                   color: "white",
                   transform: "scale(1.1)",
                 },
-                transition: "all 0.3s ease",
                 boxShadow: 2,
               }}
             >
@@ -243,7 +236,6 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
                   color: "white",
                   transform: "scale(1.1)",
                 },
-                transition: "all 0.3s ease",
                 boxShadow: 2,
               }}
             >
