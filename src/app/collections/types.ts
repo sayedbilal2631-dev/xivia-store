@@ -1,6 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
 import { Product } from './schema';
-// import { ReactNode } from 'react';
 
 export type StoreCategory =
   | 'fashion'
@@ -90,7 +89,7 @@ export interface AuthButtonProps {
   loading?: boolean;
   disabled?: boolean;
   color?: string;
-  width?:number | string
+  width?: number | string
 }
 
 export interface AuthCardProps {
@@ -109,14 +108,14 @@ export interface MUIButtonProps {
   endIcon?: React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit";
-  width?:number
-  bgColor?:any
-  buttonType?:any
-  height?:any
+  width?: number
+  bgColor?: any
+  buttonType?: any
+  height?: any
 }
 
 
- export type ProductFormData = Omit<
+export type ProductFormData = Omit<
   Product,
   | "id"
   | "metrics"
@@ -148,3 +147,4 @@ export const defaultValues: ProductFormData = {
   status: "draft" as any,
   isFeatured: false,
 };
+

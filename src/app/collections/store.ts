@@ -1,13 +1,13 @@
-export type StoreCategory = 
-  | 'fashion' 
-  | 'electronics' 
-  | 'food' 
-  | 'home-garden' 
-  | 'beauty' 
-  | 'sports' 
-  | 'books' 
-  | 'toys' 
-  | 'health' 
+export type StoreCategory =
+  | 'fashion'
+  | 'electronics'
+  | 'food'
+  | 'home-garden'
+  | 'beauty'
+  | 'sports'
+  | 'books'
+  | 'toys'
+  | 'health'
   | 'other';
 
 export interface CreateStoreFormProps {
@@ -80,4 +80,24 @@ export interface CreateStoreData {
   media: StoreMedia;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "shipped"
+  | "delivered";
+
+export interface Order {
+  id: string;
+  buyerId: string;
+  storeOwnerId: string;
+  productId: string;
+  productTitle: string;
+  productImage: string;
+  quantity: number;
+  price: number;
+  totalAmount: number;
+  createdAt: any;
+  status: OrderStatus
 }

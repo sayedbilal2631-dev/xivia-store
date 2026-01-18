@@ -1,9 +1,20 @@
 "use client";
 
 import {
-  Category, Checkroom, Devices, Home, DirectionsCar, Toys, FitnessCenter, HealthAndSafety, Construction, LocalShipping, Laptop, Restaurant,
+  Category,
+  Checkroom,
+  Devices,
+  Home,
+  DirectionsCar,
+  Toys,
+  FitnessCenter,
+  HealthAndSafety,
+  Construction,
+  LocalShipping,
+  Laptop,
+  Restaurant,
 } from "@mui/icons-material";
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { Box, Typography } from "@mui/material";
 import { useUser } from "@/app/context/CurrentUser/CurrentUser";
 
@@ -11,37 +22,35 @@ interface CategoryItem {
   id: number;
   icon: ReactElement;
   name: string;
+  value: string | null; 
 }
 
-// Global variable
-let currentGlobal: [number, string] = [1, "All Categories"];
+interface SidebarProps {
+  selectedCategory: string | null;
+  onSelectCategory: (category: string | null) => void;
+}
 
-// Categories
 export const categories: CategoryItem[] = [
-  { id: 1, icon: <Category />, name: "All Categories" },
-  { id: 2, icon: <Checkroom />, name: "Apparel & Accessories" },
-  { id: 3, icon: <Devices />, name: "Consumer Electronics" },
-  { id: 4, icon: <Home />, name: "Home & Garden" },
-  { id: 5, icon: <DirectionsCar />, name: "Vehicles & Accessories" },
-  { id: 6, icon: <Toys />, name: "Toys & Hobbies" },
-  { id: 7, icon: <FitnessCenter />, name: "Sports & Entertainment" },
-  { id: 8, icon: <HealthAndSafety />, name: "Health & Beauty" },
-  { id: 9, icon: <Construction />, name: "Machinery & Equipment" },
-  { id: 10, icon: <LocalShipping />, name: "Transportation" },
-  { id: 11, icon: <Laptop />, name: "Computer & Office" },
-  { id: 12, icon: <Restaurant />, name: "Food & Beverage" },
+  { id: 1, icon: <Category />, name: "All Categories", value: null },
+  { id: 2, icon: <Checkroom />, name: "Apparel & Accessories", value: "apparel" },
+  { id: 3, icon: <Devices />, name: "Consumer Electronics", value: "electronics" },
+  { id: 4, icon: <Home />, name: "Home & Garden", value: "home" },
+  { id: 5, icon: <DirectionsCar />, name: "Vehicles & Accessories", value: "vehicles" },
+  { id: 6, icon: <Toys />, name: "Toys & Hobbies", value: "toys" },
+  { id: 7, icon: <FitnessCenter />, name: "Sports & Entertainment", value: "sports" },
+  { id: 8, icon: <HealthAndSafety />, name: "Health & Beauty", value: "health" },
+  { id: 9, icon: <Construction />, name: "Machinery & Equipment", value: "machinery" },
+  { id: 10, icon: <LocalShipping />, name: "Transportation", value: "transportation" },
+  { id: 11, icon: <Laptop />, name: "Computer & Office", value: "computer" },
+  { id: 12, icon: <Restaurant />, name: "Food & Beverage", value: "food" },
 ];
 
-// Sidebar
-const Sidebar = () => {
-  const [current, setCurrent] = useState<[number, string]>(currentGlobal);
+const Sidebar = ({
+  selectedCategory,
+  onSelectCategory,
+}: SidebarProps) => {
   const { ownerId } = useUser();
-  console.log(ownerId)
-  const handleClick = (item: CategoryItem) => {
-    const newValue: [number, string] = [item.id, item.name];
-    setCurrent(newValue);
-    currentGlobal = newValue;
-  };
+  console.log("Owner ID:", ownerId);
 
   return (
     <Box
@@ -53,9 +62,7 @@ const Sidebar = () => {
         height: "100vh",
         overflowY: "auto",
         borderRight: "1px solid #e5e7eb",
-        "&::-webkit-scrollbar": {
-          width: 6,
-        },
+        "&::-webkit-scrollbar": { width: 6 },
         "&::-webkit-scrollbar-thumb": {
           backgroundColor: "#cbd5e1",
           borderRadius: 10,
@@ -63,12 +70,12 @@ const Sidebar = () => {
       }}
     >
       {categories.map((item) => {
-        const isActive = current[0] === item.id;
+        const isActive = selectedCategory === item.value;
 
         return (
           <Box
             key={item.id}
-            onClick={() => handleClick(item)}
+            onClick={() => onSelectCategory(item.value)}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -126,4 +133,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-export { currentGlobal };

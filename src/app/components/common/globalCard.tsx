@@ -1,5 +1,4 @@
 "use client";
-
 import { Box, Card, CardContent, Typography, Rating, IconButton, Button, } from "@mui/material";
 import { getOrCreateConversation } from "@/app/services/messages/messagingServices";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";

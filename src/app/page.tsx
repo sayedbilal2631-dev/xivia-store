@@ -8,27 +8,29 @@ import { useState } from 'react';
 
 const Page = () => {
   const [queryClient] = useState(() => new QueryClient());
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Box sx={{ width: '100%' }}>
-          <Navbar />
-        </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Navbar search={search} onSearch={setSearch} />
+
         <Container maxWidth="xl">
-          <Box sx={{ display: 'flex', my: 3, width: '100%' }}>
+          {/* Search */}
+          <Box sx={{ display: 'flex', my: 3 }}>
             <Box flex={1}>
-              <Sidebar />
+              <Sidebar
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+              />
             </Box>
+
             <Box flex={4}>
-              <Products />
+              <Products
+                selectedCategory={selectedCategory}
+                search={search}
+              />
             </Box>
           </Box>
         </Container>
