@@ -55,11 +55,9 @@ export class StoreService {
   }
 
   // Get stores by owner
-  static async getStoresByOwner(ownerId: string): Promise<Store[]> {
+  static async getStoresByOwner(ownerId: any): Promise<Store[]> {
     try {
       const storesRef = collection(db, "stores");
-
-      // Only apply `where` filter; remove orderBy unless you have an index for it
       const q = query(storesRef, where("ownerId", "==", ownerId));
 
       const snapshot = await getDocs(q);
@@ -147,11 +145,6 @@ export class StoreService {
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
       });
-
-      // await updateDoc(doc(db, "stores"), {
-      //   "metrics.totalProducts": increment(1),
-      // });
-
       return productRef.id;
     } catch (error) {
       console.error('Error creating product:', error);
@@ -186,7 +179,7 @@ export class StoreService {
     })) as Product[];
   }
   // Get product by ID
-  static async getUserProducts(userId: string): Promise<Product[]> {
+  static async getUserProducts(userId: any): Promise<Product[]> {
     const userProductsQuery = query(
       collection(db, 'products'),
       where('storeId', '==', userId)

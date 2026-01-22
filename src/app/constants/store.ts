@@ -38,7 +38,7 @@ export const sidebarSections = [
       { label: "Messages", href: "/store/pages/messages", icon: MailOutline },
       { label: "Orders", href: "/store/pages/orders", icon: ShoppingCart },
       { label: "Payment", href: "/store/pages/payment", icon: Payments },
-      { label: "Saved & history", href: "/store/pages/saved", icon: BookmarkBorder },
+      { label: "Saved & history", href: "/store/pages/saved-history", icon: BookmarkBorder },
     ],
   },
   // {

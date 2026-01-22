@@ -9,6 +9,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useRouter } from "next/navigation";
+import image from '/public/product.jpg'
 import { useState } from "react";
 import Image from "next/image";
 
@@ -19,6 +20,7 @@ interface GlobalCardProps {
 const GlobalCard = ({ data }: GlobalCardProps) => {
   const [hovered, setHovered] = useState<number | null>(null);
   const [wishlisted, setWishlisted] = useState(false);
+  const [loadingChat, setLoadingChat] = useState(false);
 
   const router = useRouter();
   const { addToCart } = useCart();
@@ -31,27 +33,25 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
     setWishlisted((prev) => !prev);
   };
 
+
   const handleAskPrice = async (e: React.MouseEvent) => {
     e.stopPropagation();
-
-    if (loading) return;
-
-    if (!firebaseUser) {
-      router.push("/login");
-      return;
-    }
-
+    if (loading || !firebaseUser) return;
+    setLoadingChat(true);
     try {
       const conversationId = await getOrCreateConversation(
-        data,
+        { ...data, id: String(data.id) },
         firebaseUser.uid
       );
-
       router.push(`/store/pages/messages/${conversationId}`);
     } catch (error) {
+      alert(error)
       console.error("Failed to create conversation:", error);
+    } finally {
+      setLoadingChat(false);
     }
   };
+
 
   return (
     <Card
@@ -79,8 +79,9 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             hovered === data.id && data.images?.[1]
               ? data.images[1]
               : data.thumbnail
+              || image
           }
-          alt={data.title}
+          alt={data.name}
           sizes="250px"
           fill
           style={{
@@ -179,7 +180,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             lineHeight: 1.3,
           }}
         >
-          {data.title}
+          {data.name}
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>

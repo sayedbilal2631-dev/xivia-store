@@ -1,12 +1,11 @@
 "use client";
 import { Box, Button, Typography, Switch, FormControlLabel, MenuItem, Select, } from "@mui/material";
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
-import { useForm, Controller, DefaultValues } from "react-hook-form";
+import { useForm, Controller,  } from "react-hook-form";
 import MUITextFieldEnhanced from "@/app/components/common/TextField";
 import useCurrentUser from "@/app/hooks/getCurrentUser";
 import { ProductFormData } from "@/app/collections/types";
 import { STORE_CATEGORIES } from "@/app/constants/store";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 const defaultValues: ProductFormData = {
@@ -32,7 +31,6 @@ const defaultValues: ProductFormData = {
 };
 
 const CreateProductForm = ({ open, setOpen }: any) => {
-  const router = useRouter();
   const user = useCurrentUser();
   const {
     control,

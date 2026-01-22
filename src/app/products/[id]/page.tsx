@@ -2,6 +2,7 @@
 import { Box, Typography, CircularProgress, Card, Chip, Rating, Button, Container, Stack, Breadcrumbs, TextField, } from "@mui/material";
 import BuyNowButton from "@/app/components/BuyNowButton/BuyNowButton";
 import { NavigateNext, Home, Star } from "@mui/icons-material";
+import CustomButton from "@/app/components/common/Button";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
@@ -22,7 +23,7 @@ interface Product {
     stock: number;
     thumbnail: string;
     images: string[];
-    storeOwnerId: string;
+    storeId: string;
 }
 
 const ProductDetails = () => {
@@ -77,7 +78,7 @@ const ProductDetails = () => {
             </Box>
         );
     }
-    
+
     const discountPrice =
         product.price * (1 - product.discountPercentage / 100);
 
@@ -87,7 +88,6 @@ const ProductDetails = () => {
         else if (num > product.stock) setOrderQty(product.stock);
         else setOrderQty(num);
     };
-
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Breadcrumbs separator={<NavigateNext fontSize="small" />} sx={{ mb: 4 }}>
@@ -187,15 +187,16 @@ const ProductDetails = () => {
 
                         {/* ACTIONS */}
                         <Stack direction="row" spacing={2} mt={2}>
-                            <Button variant="outlined">Add to Cart</Button>
+                            <CustomButton buttonType={'soft'} color={'black'} variant="outlined">Add to Cart</CustomButton>
 
                             <BuyNowButton
                                 product={{
                                     id: product.id,
-                                    title: product.name,
+                                    name: product.name,
                                     thumbnail: product.thumbnail,
                                     price: product.price,
-                                    storeId: product.storeOwnerId,
+                                    storeId: product.storeId,
+                                    image: product.images[0]
                                 }}
                                 quantity={orderQty}
                             />

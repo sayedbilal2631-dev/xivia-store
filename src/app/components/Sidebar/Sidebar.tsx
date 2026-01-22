@@ -49,8 +49,6 @@ const Sidebar = ({
   selectedCategory,
   onSelectCategory,
 }: SidebarProps) => {
-  const { ownerId } = useUser();
-  console.log("Owner ID:", ownerId);
 
   return (
     <Box

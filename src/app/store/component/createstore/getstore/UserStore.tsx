@@ -9,31 +9,28 @@ import useCurrentUser from "@/app/hooks/getCurrentUser";
 import React, { useEffect, useState } from "react";
 import MUIButton from "@/app/components/common/Button";
 import CreateStoreForm from "../CreateStoreForm/CreateStore";
+import { useUser } from "@/app/context/CurrentUser/CurrentUser";
 
-// interface UserStoreProps {
-//     open?: boolean;
-//     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-// }
 
 const UserStore = ({ open, setOpen }: any) => {
     const [store, setStore] = useState<Store | null>(null);
     const [createStore, setCreateStore] = useState<boolean>(false)
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const user = useCurrentUser();
-    const uid = user?.uid;
+    const { firebaseUser } = useUser();
+    // const uid = firebaseUser?.uid;
 
     useEffect(() => {
         const fetchStoreData = async () => {
-            if (!uid) {
+            if (!firebaseUser) {
                 setLoading(false);
                 return;
             }
 
             try {
                 const [userProducts, userStores] = await Promise.all([
-                    StoreService.getUserProducts(uid),
-                    StoreService.getStoresByOwner(uid),
+                    StoreService.getUserProducts(firebaseUser?.uid),
+                    StoreService.getStoresByOwner(firebaseUser?.uid),
                 ]);
 
                 setProducts(userProducts);
@@ -46,7 +43,7 @@ const UserStore = ({ open, setOpen }: any) => {
         };
 
         fetchStoreData();
-    }, [uid]);
+    }, [firebaseUser]);
 
     if (loading) {
         return (

@@ -1,5 +1,4 @@
 'use client';
-
 import { Box, Container, Typography } from '@mui/material';
 import Search from '../SearchBox/Search';
 import Icons from './NavbarIcons/Icons';

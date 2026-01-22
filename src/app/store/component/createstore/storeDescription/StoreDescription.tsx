@@ -1,6 +1,6 @@
 "use client";
 import { Box, Card, CardContent, Typography, } from "@mui/material";
-import { Inventory, Search, Store, } from "@mui/icons-material";
+import { Inventory, Search,  } from "@mui/icons-material";
 import Product from "../../prodcut/ProductLayout/Product";
 import MUIButton from "@/app/components/common/Button";
 import UserStore from "../getstore/UserStore";
@@ -15,10 +15,10 @@ interface StoreDescriptionProps {
 
 const StoreDescription = ({ data, isProduct }: StoreDescriptionProps) => {
     const [open, setOpen] = useState<boolean>(false);
-
     const handleProductUpload = () => {
         setOpen(prev => !prev);
     };
+
     return (
         <Box sx={{ width: "100%", p: 2 }}>
             <Box sx={{ mb: 4 }}>
@@ -44,14 +44,6 @@ const StoreDescription = ({ data, isProduct }: StoreDescriptionProps) => {
                     </Box>
 
                     <Box sx={{ display: "flex", gap: 1 }}>
-                        <MUIButton
-                            color="secondary"
-                            variant="outlined"
-                            startIcon={<Store />}
-                            buttonType="soft"
-                        >
-                            Edit shop
-                        </MUIButton>
 
                         <MUIButton
                             onClick={handleProductUpload}

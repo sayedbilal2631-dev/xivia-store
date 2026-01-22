@@ -1,17 +1,19 @@
 "use client";
 import { useState } from "react";
 import { Button, CircularProgress } from "@mui/material";
-import { createOrder } from "@/app/services/order/ordercreate";
 import { useUser } from "@/app/context/CurrentUser/CurrentUser";
+import { placeOrder } from "@/app/services/order/orderService";
+import CustomButton from "../common/Button";
 
 
 interface BuyNowButtonProps {
     product: {
         id: string;
-        title: string;
+        name: string;
         thumbnail: string;
         price: number;
         storeId: string;
+        image: string | any
     };
     quantity?: number;
     fullWidth?: boolean;
@@ -34,33 +36,35 @@ const BuyNowButton = ({
         try {
             setLoading(true);
 
-            await createOrder({
+            await placeOrder({
                 buyerId: firebaseUser.uid,
-                storeId: product.storeId,
-                product,
-                quantity,
+                sellerId: product.storeId,
+                productId: product.id,
+                productName: product.name,
+                productImage: product.image,
+                amount: product.price
             });
 
             alert("Order placed successfully");
         } catch (error) {
-            console.error(error);
-            alert("Failed to place order");
+            alert(`Failed to place order ${error}`);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <Button
+        <CustomButton
             variant="contained"
-            color="primary"
+            color="soft"
             fullWidth={fullWidth}
-            disabled={loading}
+            // disabled={loading}
             onClick={handleBuyNow}
             startIcon={loading ? <CircularProgress size={18} /> : null}
+            bgColor={'orange'}
         >
             {loading ? "Placing Order..." : "Buy Now"}
-        </Button>
+        </CustomButton>
     );
 };
 

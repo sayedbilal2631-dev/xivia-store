@@ -1,11 +1,12 @@
+import { MessageNotificationProvider } from "./context/MessageNotificartion/MessageNotificationContext";
 import ReactQueryProvider from "./components/ReactQueryProvider/ReactQueryProvider";
 import { CartProvider } from "./context/CartContext/CartContext";
 import DialogContext from "./context/CustomDialog/DialogContext";
 import { UserProvider } from "./context/CurrentUser/CurrentUser";
 import { Geist, Geist_Mono } from "next/font/google";
+import Footer from "./components/Footer/Footer";
 import type { Metadata } from "next";
 import "./globals.css";
-import Footer from "./components/Footer/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,15 +33,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ReactQueryProvider>
-          <DialogContext>
-            <UserProvider>
-              <CartProvider>
-                {/* <Navbar /> */}
-                {children}
-                <Footer />
-              </CartProvider>
-            </UserProvider>
-          </DialogContext>
+          <UserProvider>
+            <MessageNotificationProvider>
+              <DialogContext>
+                <CartProvider>
+                  {/* <Navbar /> */}
+                  {children}
+                  <Footer />
+                </CartProvider>
+              </DialogContext>
+            </MessageNotificationProvider>
+          </UserProvider>
         </ReactQueryProvider>
       </body>
     </html>

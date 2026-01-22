@@ -1,7 +1,7 @@
 'use client';
-import { Box, TextField, InputAdornment, alpha, IconButton, Typography } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { Box, TextField, InputAdornment, alpha, IconButton,  } from "@mui/material";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useEffect, useState } from "react";
 
