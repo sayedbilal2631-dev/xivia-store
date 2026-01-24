@@ -1,4 +1,5 @@
 "use client";
+
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
 import { Box, Grid, Typography, CircularProgress } from "@mui/material";
 import CustomDialog from "@/app/components/customDialog/CustomDialog";
@@ -31,7 +32,6 @@ const GetProduct = ({
                 setLoading(true);
 
                 const data = await StoreService.getUserProducts(storeId);
-
                 let sorted = [...data];
 
                 if (filter === "lowestPrice") {
@@ -78,29 +78,72 @@ const GetProduct = ({
         }
     };
 
+    /* LOADING STATE */
     if (loading) {
         return (
-            <Box sx={{ p: 4, display: "flex", alignItems: "center", gap: 2 }}>
-                <CircularProgress size={24} />
+            <Box
+                sx={{
+                    minHeight: 200,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 2,
+                }}
+            >
+                <CircularProgress size={28} />
                 <Typography>Loading products…</Typography>
             </Box>
         );
     }
 
     return (
-        <Box sx={{ p: 3 }}>
-            <Typography variant="h4" fontWeight="bold" gutterBottom>
+        <Box
+            sx={{
+                width: "100%",
+                p: { xs: 1.5, sm: 2, md: 3 },
+            }}
+        >
+            {/* Header */}
+            <Typography
+                sx={{
+                    fontWeight: 700,
+                    mb: 2,
+                    fontSize: {
+                        xs: "1.2rem",
+                        sm: "1.4rem",
+                        md: "1.6rem",
+                    },
+                }}
+            >
                 Your Products
             </Typography>
 
+            {/* Empty State */}
             {products.length === 0 ? (
-                <Typography color="text.secondary">
+                <Typography
+                    sx={{
+                        color: "text.secondary",
+                        fontSize: { xs: "0.9rem", sm: "1rem" },
+                    }}
+                >
                     No products found. Create your first product to get started.
                 </Typography>
             ) : (
-                <Grid container spacing={3}>
+                /* PRODUCT GRID */
+                <Grid
+                    container
+                    spacing={{ xs: 2, sm: 2.5, md: 3 }}
+                >
                     {products.map((product) => (
-                        <Grid key={product.id} size={{ xs: 6, sm: 6, md: 4, lg: 3 }}>
+                        <Grid
+                            key={product.id}
+                            size={{
+                                xs: 12,   // mobile: 1 per row
+                                sm: 6,    // tablet: 2 per row
+                                md: 4,    // desktop: 3 per row
+                                lg: 3,    // large: 4 per row
+                            }}
+                        >
                             <ShowProduct
                                 data={product}
                                 onEdit={handleEdit}
@@ -111,7 +154,12 @@ const GetProduct = ({
                 </Grid>
             )}
 
-            <CustomDialog open={openDialog} onClose={handleCloseDialog} btnTitle="Cancel">
+            {/* Edit / Create Dialog */}
+            <CustomDialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                btnTitle="Cancel"
+            >
                 <CreateProductForm
                     open={openDialog}
                     setOpen={setOpenDialog}

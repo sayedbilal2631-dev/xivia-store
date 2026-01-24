@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import { useRouter, } from "next/navigation";
 import { useUser } from "@/app/context/CurrentUser/CurrentUser";
-import { Message, Menu as MenuIcon, } from "@mui/icons-material";
+import { Message, ArrowBackRounded, } from "@mui/icons-material";
 import { useMessageNotification } from "@/app/context/MessageNotificartion/MessageNotificationContext";
 import { AppBar, Toolbar, Typography, IconButton, Box, Menu, MenuItem, Avatar, Badge, } from "@mui/material";
+import Link from "next/link";
 
 const SellerNavbar = () => {
     const router = useRouter();
@@ -33,9 +34,23 @@ const SellerNavbar = () => {
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                 {/* Left Section */}
                 <Box display="flex" alignItems="center" gap={2}>
-                    <IconButton edge="start" color="inherit">
-                        <MenuIcon />
-                    </IconButton>
+                    <Link href="/" passHref>
+                        <IconButton
+                            edge="start"
+                            sx={{
+                                color: "#0f172a",
+                                bgcolor: "#f1f5f9",
+                                mr: 1,
+                                transition: "all 0.2s ease",
+                                "&:hover": {
+                                    bgcolor: "#e2e8f0",
+                                    transform: "translateX(-3px)",
+                                },
+                            }}
+                        >
+                            <ArrowBackRounded />
+                        </IconButton>
+                    </Link>
 
                     <Typography
                         variant="h6"
@@ -43,7 +58,7 @@ const SellerNavbar = () => {
                         sx={{ cursor: "pointer", color: "#ff7a18" }}
                         onClick={() => router.push("/store")}
                     >
-                        Seller Panel
+                        Seller Store
                     </Typography>
                 </Box>
 

@@ -3,6 +3,7 @@ import { Box, Drawer, IconButton, useMediaQuery, useTheme, } from "@mui/material
 import MenuIcon from "@mui/icons-material/Menu";
 import SidebarContent from "./SidebarContent";
 import { useState } from "react";
+import { CloseSharp } from "@mui/icons-material";
 
 const drawerWidth = 260;
 
@@ -33,17 +34,18 @@ export default function Sidebar() {
     <>
       {/* toggle button */}
       <IconButton
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen(!open)}
         sx={{
           position: "fixed",
-          top: 16,
+          top: 40,
           left: 16,
           zIndex: 1300,
           bgcolor: "#fff",
           boxShadow: 2,
         }}
       >
-        <MenuIcon />
+        {open ? <CloseSharp /> : <MenuIcon />
+        }
       </IconButton>
 
       <Drawer

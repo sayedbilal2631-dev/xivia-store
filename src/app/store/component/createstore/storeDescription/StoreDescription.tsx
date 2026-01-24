@@ -1,5 +1,6 @@
 "use client";
-import { Box, Typography, } from "@mui/material";
+
+import { Box, Typography } from "@mui/material";
 import Product from "../../prodcut/ProductLayout/Product";
 import MUIButton from "@/app/components/common/Button";
 import UserStore from "../getstore/UserStore";
@@ -14,36 +15,63 @@ interface StoreDescriptionProps {
 
 const StoreDescription = ({ data, isProduct }: StoreDescriptionProps) => {
     const [open, setOpen] = useState<boolean>(false);
+
     const handleProductUpload = () => {
-        setOpen(prev => !prev);
+        setOpen((prev) => !prev);
     };
 
     return (
-        <Box sx={{ width: "100%", p: 2 }}>
-            <Box sx={{ mb: 4 }}>
+        <Box
+            sx={{
+                width: "100%",
+                p: { xs: 1.5, sm: 2, md: 3 },
+            }}
+        >
+            {/* Header Section */}
+            <Box sx={{ mb: 3 }}>
                 <Box
                     sx={{
                         display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
                         justifyContent: "space-between",
-                        alignItems: "flex-start",
+                        alignItems: { xs: "flex-start", sm: "center" },
                         gap: 2,
-                        flexWrap: "wrap",
                     }}
                 >
-                    <Box>
+                    {/* Store Info */}
+                    <Box sx={{ minWidth: 0 }}>
                         <Typography
-                            variant="h4"
-                            sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+                            sx={{
+                                fontWeight: 700,
+                                textTransform: "capitalize",
+                                fontSize: {
+                                    xs: "1.4rem",
+                                    sm: "1.6rem",
+                                    md: "2rem",
+                                },
+                                lineHeight: 1.2,
+                                wordBreak: "break-word",
+                            }}
                         >
                             {data.storeName}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+
+                        <Typography
+                            variant="body2"
+                            sx={{ color: "text.secondary", mt: 0.5 }}
+                        >
                             No reviews yet
                         </Typography>
                     </Box>
 
-                    <Box sx={{ display: "flex", gap: 1 }}>
-
+                    {/* Action Buttons */}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            width: { xs: "100%", sm: "auto" },
+                            justifyContent: { xs: "flex-start", sm: "flex-end" },
+                        }}
+                    >
                         <MUIButton
                             onClick={handleProductUpload}
                             color="success"
@@ -55,17 +83,20 @@ const StoreDescription = ({ data, isProduct }: StoreDescriptionProps) => {
                 </Box>
             </Box>
 
+            {/* Content Section */}
             {open ? (
                 <UserStore open={open} setOpen={setOpen} />
             ) : (
                 <Box
                     sx={{
                         display: "flex",
-                        gap: 4,
                         flexDirection: { xs: "column", md: "row" },
+                        gap: { xs: 2, md: 4 },
+                        width: "100%",
                     }}
                 >
-                    <Box sx={{ flex: 1 }}>
+                    {/* Products */}
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
                         <Product isProduct={isProduct} />
                     </Box>
                 </Box>

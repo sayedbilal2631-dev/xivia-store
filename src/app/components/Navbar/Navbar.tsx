@@ -3,22 +3,24 @@ import { Box, Container, Typography } from '@mui/material';
 import Search from '../SearchBox/Search';
 import Icons from './NavbarIcons/Icons';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
 interface NavbarProps {
   search: string;
   onSearch: (value: string) => void;
+  children?: ReactNode
 }
 
-const Navbar = ({ search, onSearch }: NavbarProps) => {
+const Navbar = ({ search, onSearch, children }: NavbarProps) => {
   return (
-    <Box sx={{ width: '100%', boxShadow: '0px 0px 10px', py: 2, zIndex:999 }}>
+    <Box sx={{ width: '100%', boxShadow: '0px 0px 10px', py: 2, zIndex: 999 }}>
       <Container maxWidth="xl">
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            flexDirection: { xs: 'column', sm: 'row' },
+            flexDirection: { xs: 'column', md: 'row' },
             gap: 2,
           }}
         >
@@ -33,8 +35,10 @@ const Navbar = ({ search, onSearch }: NavbarProps) => {
 
           {/* Search connected to page state */}
           <Search value={search} onSearch={onSearch} />
-
-          <Icons />
+          <Box sx={{display:'flex', gap:'20px'}}>
+            <Icons />
+            {children}
+          </Box>
         </Box>
       </Container>
     </Box>

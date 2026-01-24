@@ -10,7 +10,7 @@ const page = () => {
         <Box sx={{ flex: 1 }}>
           <Container maxWidth="xl">
             <Box
-              sx={{ width: { xs: "95%", md: "90%" }, margin: "auto", py: 3, }}
+              sx={{ width: { xs: "100%", md: "90%" }, margin: "auto", py: 3, }}
             >
               <UserStore />
             </Box>

@@ -1,6 +1,7 @@
-// "use client";
-import { Box, Container, Grid, Typography, IconButton, Divider, } from "@mui/material";
-import { Facebook, Twitter, Instagram, LinkedIn, } from "@mui/icons-material";
+"use client";
+
+import { Box, Container, Typography, IconButton, Divider } from "@mui/material";
+import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
 import { FooterLink } from "./FooterLink";
 
 const Footer = () => {
@@ -15,21 +16,29 @@ const Footer = () => {
                 pb: 3,
             }}
         >
-            <Container maxWidth="lg">
-                <Grid container spacing={4}>
+            <Container maxWidth={'lg'}>
+                {/* Top Section */}
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 4,
+                        justifyContent: "space-between",
+                    }}
+                >
                     {/* Brand */}
-                    <Grid size={{ md: 4, xs: 12 }}>
+                    <Box sx={{ flex: { xs: "1 1 100%", md: "1 1 30%" } }}>
                         <Typography variant="h6" fontWeight={700} gutterBottom>
                             YourStore
                         </Typography>
-                        <Typography variant="body2" sx={{ color: "#9ca3af" }}>
+                        <Typography variant="body2" sx={{ color: "#9ca3af", maxWidth: 300 }}>
                             Your trusted marketplace for quality products.
                             Buy with confidence and sell with ease.
                         </Typography>
-                    </Grid>
+                    </Box>
 
-                    {/* Quick Links */}
-                    <Grid size={{ md: 2, xs: 6 }}>
+                    {/* Shop */}
+                    <Box sx={{ flex: { xs: "1 1 45%", sm: "1 1 30%", md: "1 1 12%" } }}>
                         <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                             Shop
                         </Typography>
@@ -37,10 +46,10 @@ const Footer = () => {
                         <FooterLink href="/categories" label="Categories" />
                         <FooterLink href="/deals" label="Deals" />
                         <FooterLink href="/new-arrivals" label="New Arrivals" />
-                    </Grid>
+                    </Box>
 
                     {/* Company */}
-                    <Grid size={{ md: 2, xs: 6 }}>
+                    <Box sx={{ flex: { xs: "1 1 45%", sm: "1 1 30%", md: "1 1 12%" } }}>
                         <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                             Company
                         </Typography>
@@ -48,10 +57,10 @@ const Footer = () => {
                         <FooterLink href="/contact" label="Contact" />
                         <FooterLink href="/careers" label="Careers" />
                         <FooterLink href="/blog" label="Blog" />
-                    </Grid>
+                    </Box>
 
                     {/* Legal */}
-                    <Grid size={{ md: 2, xs: 6 }}>
+                    <Box sx={{ flex: { xs: "1 1 45%", sm: "1 1 30%", md: "1 1 12%" } }}>
                         <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                             Legal
                         </Typography>
@@ -59,29 +68,29 @@ const Footer = () => {
                         <FooterLink href="/terms" label="Terms & Conditions" />
                         <FooterLink href="/refund-policy" label="Refund Policy" />
                         <FooterLink href="/shipping" label="Shipping Info" />
-                    </Grid>
+                    </Box>
 
                     {/* Social */}
-                    <Grid size={{ md: 2, xs: 6 }}>
+                    <Box sx={{ flex: { xs: "1 1 45%", sm: "1 1 30%", md: "1 1 12%" } }}>
                         <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                             Follow Us
                         </Typography>
                         <Box sx={{ display: "flex", gap: 1 }}>
-                            <IconButton color="inherit">
+                            <IconButton sx={{ color: "#3b82f6" }}>
                                 <Facebook />
                             </IconButton>
-                            <IconButton color="inherit">
+                            <IconButton sx={{ color: "#ec4899" }}>
                                 <Instagram />
                             </IconButton>
-                            <IconButton color="inherit">
+                            <IconButton sx={{ color: "#06b6d4" }}>
                                 <Twitter />
                             </IconButton>
-                            <IconButton color="inherit">
+                            <IconButton sx={{ color: "#0ea5e9" }}>
                                 <LinkedIn />
                             </IconButton>
                         </Box>
-                    </Grid>
-                </Grid>
+                    </Box>
+                </Box>
 
                 <Divider sx={{ my: 4, borderColor: "#1f2933" }} />
 
@@ -93,6 +102,7 @@ const Footer = () => {
                         justifyContent: "space-between",
                         alignItems: "center",
                         gap: 2,
+                        textAlign: { xs: "center", md: "left" },
                     }}
                 >
                     <Typography variant="body2" sx={{ color: "#9ca3af" }}>
@@ -104,10 +114,8 @@ const Footer = () => {
                     </Typography>
                 </Box>
             </Container>
-        </Box >
+        </Box>
     );
 };
 
 export default Footer;
-
-

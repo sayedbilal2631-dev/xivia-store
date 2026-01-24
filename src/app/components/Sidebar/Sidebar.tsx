@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Category, Checkroom, Devices, Home, DirectionsCar, Toys, FitnessCenter, HealthAndSafety, Construction, LocalShipping, Laptop, Restaurant, } from "@mui/icons-material";
+import { Category, Checkroom, Devices, Home, DirectionsCar, Toys, FitnessCenter, HealthAndSafety, Construction, LocalShipping, Laptop, Restaurant } from "@mui/icons-material";
 import { ReactElement } from "react";
 import { Box, Typography } from "@mui/material";
 
@@ -14,6 +14,7 @@ interface CategoryItem {
 interface SidebarProps {
   selectedCategory: string | null;
   onSelectCategory: (category: string | null) => void;
+  isDrawer?: boolean; // optional prop to detect drawer mode
 }
 
 export const categories: CategoryItem[] = [
@@ -31,20 +32,18 @@ export const categories: CategoryItem[] = [
   { id: 12, icon: <Restaurant />, name: "Food & Beverage", value: "food" },
 ];
 
-const Sidebar = ({
-  selectedCategory,
-  onSelectCategory,
-}: SidebarProps) => {
+const Sidebar = ({ selectedCategory, onSelectCategory, isDrawer = false }: SidebarProps) => {
 
   return (
     <Box
       sx={{
         width: 280,
         bgcolor: "#f9fafb",
-        position: "sticky",
-        top: 0,
-        height: "100vh",
+        position: isDrawer ? "relative" : "sticky",
+        top: isDrawer ? "auto" : 0,
+        height: isDrawer ? "100vh" : "100vh",
         overflowY: "auto",
+        overflowX: 'hidden',
         borderRight: "1px solid #e5e7eb",
         "&::-webkit-scrollbar": { width: 6 },
         "&::-webkit-scrollbar-thumb": {
