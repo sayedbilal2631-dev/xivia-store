@@ -1,22 +1,14 @@
 "use client";
-import {
-  Box,
-  IconButton,
-  Typography,
-  Badge,
-  Drawer,
-} from "@mui/material";
-import {
-  ProductionQuantityLimits,
-  ShoppingCartCheckoutOutlined,
-} from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { ProductionQuantityLimits, ShoppingCartCheckoutOutlined, } from "@mui/icons-material";
+import { StoreService } from "@/app/lib/services/store-services/storeServices";
+import { Box, IconButton, Typography, Badge, Drawer, } from "@mui/material";
 import { useCart } from "@/app/context/CartContext/CartContext";
+import { useEffect, useState } from "react";
 import CartProduct from "./CartProduct";
 
 const Cart = () => {
   const [openCart, setOpenCart] = useState(false);
-  const { cartItems, cartCount,  } = useCart();
+  const { cartItems, cartCount, } = useCart();
   const [cartProducts, setCartProducts] = useState<any[]>([]);
 
   const handleToggleCart = (state: boolean) => () => {
@@ -28,7 +20,7 @@ const Cart = () => {
       // Fetch all products
       Promise.all(
         cartItems.map((id) =>
-          fetch(`https://dummyjson.com/products/${id}`).then((res) => res.json())
+          StoreService.getProductById(id)
         )
       ).then((data) => {
         setCartProducts(data);
@@ -37,7 +29,6 @@ const Cart = () => {
       setCartProducts([]);
     }
   }, [cartItems]);
-
   return (
     <Box>
       {/* Cart Icon */}
@@ -88,7 +79,7 @@ const Cart = () => {
               <Typography variant="h6" sx={{ mb: 1 }}>
                 Your Cart
               </Typography>
-              
+
               {/* ✅ Map and send product data to CartProduct */}
               {cartProducts.map((product, idx) => (
                 <Box key={idx} sx={{ mt: 2 }}>

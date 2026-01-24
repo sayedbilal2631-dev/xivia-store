@@ -1,7 +1,8 @@
 import {
   collection, doc, getDocs, query, where, orderBy, limit,
   updateDoc, addDoc, getDoc, Timestamp, writeBatch, increment,
-  setDoc
+  setDoc,
+  deleteDoc
 } from 'firebase/firestore';
 import {
   Store, StoreCategory, Product, Order,
@@ -129,7 +130,7 @@ export class StoreService {
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Store));
   }
 
-  // Create product
+  // Create product ________Product Services
   static async createProduct(
     productData: Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'metrics'>
   ): Promise<string> {
@@ -149,6 +150,25 @@ export class StoreService {
     } catch (error) {
       console.error('Error creating product:', error);
       throw new Error(`Failed to create product: ${error}`);
+    }
+  }
+
+  static async getProductById(id: string | any) {
+    try {
+      const ref = doc(db, "products", id);
+      const snap = await getDoc(ref);
+
+      if (!snap.exists()) {
+        throw new Error("Product not found");
+      }
+
+      return {
+        id: snap.id,
+        ...snap.data(),
+      };
+    } catch (error: any) {
+      console.error("getProductById failed:", error);
+      throw new Error(`Error occurred while fetching product: ${error.message}`);
     }
   }
 
@@ -377,6 +397,72 @@ export class StoreService {
       }, {} as Record<OrderStatus, number>)
     };
   }
+
+
+
+  // ---------------- UPDATE PRODUCT STATUS (ENABLE / DISABLE) ----------------
+  static async updateProductStatus(
+    productId: string,
+    status: ProductStatus
+  ): Promise<void> {
+    try {
+      await updateDoc(doc(db, 'products', productId), {
+        status,
+        updatedAt: Timestamp.now(),
+      });
+    } catch (error) {
+      console.error('Error updating product status:', error);
+      throw new Error(`Failed to update product status: ${error}`);
+    }
+  }
+
+  // ---------------- SOFT DELETE PRODUCT (RECOMMENDED) ----------------
+  static async softDeleteProduct(productId: string): Promise<void> {
+    try {
+      await updateDoc(doc(db, 'products', productId), {
+        status: 'deleted',
+        deletedAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      });
+    } catch (error) {
+      console.error('Error soft deleting product:', error);
+      throw new Error(`Failed to delete product: ${error}`);
+    }
+  }
+
+  // ---------------- HARD DELETE (ADMIN / DANGEROUS) ----------------
+  // Only use this for admin cleanup — NOT normal sellers
+  static async permanentlyDeleteProduct(productId: string): Promise<void> {
+    try {
+      await deleteDoc(doc(db, 'products', productId));
+    } catch (error) {
+      console.error('Error permanently deleting product:', error);
+      throw new Error(`Failed to permanently delete product: ${error}`);
+    }
+  }
+
+  // ---------------- OPTIONAL: BULK STATUS UPDATE (FUTURE READY) ----------------
+  static async bulkUpdateProductStatus(
+    productIds: string[],
+    status: ProductStatus
+  ): Promise<void> {
+    try {
+      const updates = productIds.map((id) =>
+        updateDoc(doc(db, 'products', id), {
+          status,
+          updatedAt: Timestamp.now(),
+        })
+      );
+
+      await Promise.all(updates);
+    } catch (error) {
+      console.error('Error bulk updating products:', error);
+      throw new Error(`Failed to bulk update products: ${error}`);
+    }
+  }
+
+
+
 
   // SEARCH METHODS
 

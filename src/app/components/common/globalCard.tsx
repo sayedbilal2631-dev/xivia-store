@@ -39,11 +39,11 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
     if (loading || !firebaseUser) return;
     setLoadingChat(true);
     try {
-      const conversationId = await getOrCreateConversation(
+      await getOrCreateConversation(
         { ...data, id: String(data.id) },
         firebaseUser.uid
       );
-      router.push(`/store/pages/messages/${conversationId}`);
+      router.push(`/store/pages/messages`);
     } catch (error) {
       alert(error)
       console.error("Failed to create conversation:", error);

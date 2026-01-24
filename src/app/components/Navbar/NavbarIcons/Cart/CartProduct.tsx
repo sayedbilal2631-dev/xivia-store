@@ -1,15 +1,16 @@
 "use client";
 import { Typography, Card, CardContent, IconButton, Box } from "@mui/material";
-import Image from "next/image";
 import { useCart } from "@/app/context/CartContext/CartContext";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
+import image from '/public/product.jpg'
+import { Eye } from "lucide-react";
+import Image from "next/image";
 
 const CartProduct = ({ data }: { data: any }) => {
     const { removeFromCart } = useCart();
     const router = useRouter();
-    const shortTitle = data.title.split(" ").slice(0, 2).join(" ");
+    const shortTitle = data.name.split(" ").slice(0, 2).join(" ");
 
     return (
         <Card
@@ -24,9 +25,9 @@ const CartProduct = ({ data }: { data: any }) => {
             }}
         >
             {/* Product Image */}
-            <Box sx={{width:'70px', height:'70px', position:'relative'}}>
+            <Box sx={{ width: '70px', height: '70px', position: 'relative' }}>
                 <Image
-                    src={data.thumbnail}
+                    src={data.thumbnail || image}
                     alt={data.title}
                     fill
                     style={{ borderRadius: "8px", objectFit: "cover" }}

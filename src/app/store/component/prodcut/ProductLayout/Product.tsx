@@ -2,12 +2,14 @@ import { Box, Typography, Select, MenuItem, FormControl, Card, CardContent } fro
 import { ArrowDropDown, Inventory } from '@mui/icons-material';
 import GetProduct from '../FetchProduct/GetProduct';
 import React, { useState } from 'react'
+import { useUser } from '@/app/context/CurrentUser/CurrentUser';
 
 const Product = ({ isProduct }: any) => {
     const [sortOption, setSortOption] = useState('mostRecent');
     const handleSortChange = (event: any) => {
         setSortOption(event.target.value);
     };
+    const { firebaseUser } = useUser()
     return (
         <div>
             <Box >
@@ -53,7 +55,7 @@ const Product = ({ isProduct }: any) => {
                         py: 8,
                         color: 'text.secondary'
                     }}>
-                        {isProduct == true ? <GetProduct filter={sortOption} />
+                        {isProduct == true ? <GetProduct storeId={firebaseUser?.uid} filter={sortOption} />
                             : <>
                                 <Inventory sx={{ fontSize: 64, mb: 2, opacity: 0.5 }} />
                                 <Typography variant="h6" gutterBottom>
