@@ -1,28 +1,14 @@
 "use client";
 
-import {
-  Category,
-  Checkroom,
-  Devices,
-  Home,
-  DirectionsCar,
-  Toys,
-  FitnessCenter,
-  HealthAndSafety,
-  Construction,
-  LocalShipping,
-  Laptop,
-  Restaurant,
-} from "@mui/icons-material";
+import { Category, Checkroom, Devices, Home, DirectionsCar, Toys, FitnessCenter, HealthAndSafety, Construction, LocalShipping, Laptop, Restaurant, } from "@mui/icons-material";
 import { ReactElement } from "react";
 import { Box, Typography } from "@mui/material";
-import { useUser } from "@/app/context/CurrentUser/CurrentUser";
 
 interface CategoryItem {
   id: number;
   icon: ReactElement;
   name: string;
-  value: string | null; 
+  value: string | null;
 }
 
 interface SidebarProps {

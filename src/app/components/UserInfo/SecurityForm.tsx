@@ -1,8 +1,8 @@
 "use client";
-import { Box, Button, Typography } from "@mui/material";
 import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
-import { useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
 import MUITextFieldEnhanced from "../common/TextField";
+import { useState } from "react";
 
 const SecurityForm = () => {
     const [oldPassword, setOldPassword] = useState("");

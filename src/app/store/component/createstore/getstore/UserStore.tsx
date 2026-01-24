@@ -5,7 +5,6 @@ import CustomDialog from "@/app/components/customDialog/CustomDialog";
 import StoreDescription from "../storeDescription/StoreDescription";
 import { Box, CircularProgress, Alert } from "@mui/material";
 import { Product, Store } from "@/app/collections/schema";
-import useCurrentUser from "@/app/hooks/getCurrentUser";
 import React, { useEffect, useState } from "react";
 import MUIButton from "@/app/components/common/Button";
 import CreateStoreForm from "../CreateStoreForm/CreateStore";

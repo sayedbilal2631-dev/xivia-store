@@ -1,4 +1,4 @@
-import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
+import { collection, query, where,  getDocs } from "firebase/firestore";
 import { db } from "@/app/config/firebase";
 
 // Get completed / paid orders (History) — NO INDEX REQUIRED
