@@ -1,13 +1,15 @@
 "use client";
-
+import { Box, Typography, CircularProgress, Button, Stack, IconButton, Pagination } from "@mui/material";
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
-import { Box, Grid, Typography, CircularProgress } from "@mui/material";
 import CustomDialog from "@/app/components/customDialog/CustomDialog";
 import CreateProductForm from "../uploadProduct/UploadProduct";
 import useCurrentUser from "@/app/hooks/getCurrentUser";
 import ShowProduct from "../showProduct/ShowProduct";
 import { Product } from "@/app/collections/schema";
 import { useEffect, useState } from "react";
+import { ArrowForward } from "@mui/icons-material";
+
+const PRODUCTS_PER_PAGE = 6
 
 const GetProduct = ({
     filter,
@@ -21,7 +23,20 @@ const GetProduct = ({
 
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const [page, setPage] = useState(1);
 
+    // Calculate total pages
+    const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+
+    // Slice products for current page
+    const paginatedProducts = products.slice(
+        (page - 1) * PRODUCTS_PER_PAGE,
+        page * PRODUCTS_PER_PAGE
+    );
+
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
     const user = useCurrentUser();
 
     useEffect(() => {
@@ -130,28 +145,53 @@ const GetProduct = ({
                 </Typography>
             ) : (
                 /* PRODUCT GRID */
-                <Grid
-                    container
-                    spacing={{ xs: 2, sm: 2.5, md: 3 }}
-                >
-                    {products.map((product) => (
-                        <Grid
-                            key={product.id}
-                            size={{
-                                xs: 12,   // mobile: 1 per row
-                                sm: 6,    // tablet: 2 per row
-                                md: 4,    // desktop: 3 per row
-                                lg: 3,    // large: 4 per row
-                            }}
-                        >
-                            <ShowProduct
-                                data={product}
-                                onEdit={handleEdit}
-                                onDelete={handleDelete}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+                <Box>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: { xs: 2, sm: 2.5, md: 3 },
+                            justifyContent: "center",
+                            mt: 2,
+                        }}
+                    >
+                        {paginatedProducts.map((product) => (
+                            <Box
+                                key={product.id}
+                                sx={{
+                                    flex: {
+                                        xs: "1 1 100%",
+                                        sm: "1 1 calc(50% - 16px)",
+                                        md: "1 1 calc(33.33% - 20px)",
+                                    },
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Box >
+                                    <ShowProduct
+                                        data={product}
+                                        onEdit={handleEdit}
+                                        onDelete={handleDelete}
+                                    />
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
+
+                    {/* Pagination Controls */}
+                    <Stack direction="row" justifyContent="center" mt={4}>
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            onChange={handlePageChange}
+                            variant="outlined"
+                            shape="rounded"
+                            showFirstButton
+                            showLastButton
+                        />
+                    </Stack>
+                </Box>
             )}
 
             {/* Edit / Create Dialog */}

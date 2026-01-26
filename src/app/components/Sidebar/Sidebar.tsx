@@ -1,8 +1,8 @@
 'use client';
-
-import { Category, Checkroom, Devices, Home, DirectionsCar, Toys, FitnessCenter, HealthAndSafety, Construction, LocalShipping, Laptop, Restaurant } from "@mui/icons-material";
-import { ReactElement } from "react";
+import { Category, Checkroom, Devices, Home, DirectionsCar, Toys, FitnessCenter, HealthAndSafety,  Restaurant, MenuBook, LocalHospital, Pets, BusinessCenter, ChildCare, Park } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
+import { Diamond } from "lucide-react";
+import { ReactElement } from "react";
 
 interface CategoryItem {
   id: number;
@@ -14,23 +14,29 @@ interface CategoryItem {
 interface SidebarProps {
   selectedCategory: string | null;
   onSelectCategory: (category: string | null) => void;
-  isDrawer?: boolean; // optional prop to detect drawer mode
+  isDrawer?: boolean;
 }
+
 
 export const categories: CategoryItem[] = [
   { id: 1, icon: <Category />, name: "All Categories", value: null },
-  { id: 2, icon: <Checkroom />, name: "Apparel & Accessories", value: "apparel" },
-  { id: 3, icon: <Devices />, name: "Consumer Electronics", value: "electronics" },
-  { id: 4, icon: <Home />, name: "Home & Garden", value: "home" },
-  { id: 5, icon: <DirectionsCar />, name: "Vehicles & Accessories", value: "vehicles" },
-  { id: 6, icon: <Toys />, name: "Toys & Hobbies", value: "toys" },
-  { id: 7, icon: <FitnessCenter />, name: "Sports & Entertainment", value: "sports" },
-  { id: 8, icon: <HealthAndSafety />, name: "Health & Beauty", value: "health" },
-  { id: 9, icon: <Construction />, name: "Machinery & Equipment", value: "machinery" },
-  { id: 10, icon: <LocalShipping />, name: "Transportation", value: "transportation" },
-  { id: 11, icon: <Laptop />, name: "Computer & Office", value: "computer" },
-  { id: 12, icon: <Restaurant />, name: "Food & Beverage", value: "food" },
+  { id: 2, icon: <Devices />, name: "Electronics", value: "electronics" },
+  { id: 3, icon: <Checkroom />, name: "Clothing", value: "clothing" },
+  { id: 4, icon: <Home />, name: "Home & Kitchen", value: "home-kitchen" },
+  { id: 5, icon: <HealthAndSafety />, name: "Beauty", value: "beauty" },
+  { id: 6, icon: <FitnessCenter />, name: "Sports & Fitness", value: "sports-fitness" },
+  { id: 7, icon: <MenuBook />, name: "Books", value: "books" },
+  { id: 8, icon: <Toys />, name: "Toys & Games", value: "toys-games" },
+  { id: 9, icon: <DirectionsCar />, name: "Automotive", value: "automotive" },
+  { id: 10, icon: <Restaurant />, name: "Food & Beverages", value: "food-beverages" },
+  { id: 11, icon: <LocalHospital />, name: "Health & Wellness", value: "health-wellness" },
+  { id: 12, icon: <Diamond />, name: "Jewelry & Accessories", value: "jewelry-accessories" },
+  { id: 13, icon: <Pets />, name: "Pet Supplies", value: "pet-supplies" },
+  { id: 14, icon: <BusinessCenter />, name: "Office Supplies", value: "office-supplies" },
+  { id: 15, icon: <ChildCare />, name: "Baby Products", value: "baby-products" },
+  { id: 16, icon: <Park />, name: "Garden & Outdoor", value: "garden-outdoor" },
 ];
+
 
 const Sidebar = ({ selectedCategory, onSelectCategory, isDrawer = false }: SidebarProps) => {
 

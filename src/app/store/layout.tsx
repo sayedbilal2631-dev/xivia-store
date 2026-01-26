@@ -1,5 +1,4 @@
 "use client";
-
 import ProductGlobalState from "../context/ProductContext/ProductContext";
 import SellerNavbar from "./component/sellerNavbar/SellerNavbar";
 import Sidebar from "./component/Sidebar/Sidebar";
@@ -30,7 +29,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         {/* Sidebar */}
                         <Box
                             sx={{
-                                width: { xs: "100%", md: 260 },
+                                width: { xs: "90%", md: 260 },
                                 flexShrink: 0,
                                 position: { md: "sticky" },
                                 top: { md: 80 }, // below navbar

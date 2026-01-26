@@ -48,7 +48,7 @@ const Page = () => {
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', md: 'row' },
-              gap: 3,
+              gap: 0,
               my: 3,
             }}
           >
@@ -97,7 +97,7 @@ const Page = () => {
               flex={4}
               sx={{
                 borderRadius: 2,
-                p: 2,
+                p: 1,
                 minHeight: '80vh',
               }}
             >

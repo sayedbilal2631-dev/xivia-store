@@ -1,20 +1,20 @@
 "use client";
-
-import { Box, Button, Typography, Switch, FormControlLabel, MenuItem, Select } from "@mui/material";
+import { Box, Typography, Switch, FormControlLabel, MenuItem, Select } from "@mui/material";
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
-import { useForm, Controller } from "react-hook-form";
 import MUITextFieldEnhanced from "@/app/components/common/TextField";
+import { useForm, Controller } from "react-hook-form";
 import useCurrentUser from "@/app/hooks/getCurrentUser";
 import { ProductFormData } from "@/app/collections/types";
-import { STORE_CATEGORIES } from "@/app/constants/store";
+import { productCategories } from "@/app/constants/store";
 import React, { useEffect } from "react";
+import CustomButton from "@/app/components/common/Button";
 
 const defaultValues: ProductFormData = {
   name: "",
   description: "",
   price: null,
   costPrice: null,
-  category: "other" as any,
+  category: 'automotive',
   tags: [],
   sku: "",
   barcode: "",
@@ -139,13 +139,14 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
           <Controller
             name="category"
             control={control}
+            rules={{ required: 'Select Product Categroy' }}
             render={({ field }) => (
               <Select
                 sx={{ backgroundColor: "#f9f9f9", borderRadius: "16px" }}
                 {...field}
                 fullWidth
               >
-                {STORE_CATEGORIES.map((cat, i) => (
+                {productCategories.map((cat, i) => (
                   <MenuItem key={i} value={cat.value}>
                     {cat.label}
                   </MenuItem>
@@ -160,6 +161,7 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
           </Typography>
 
           <Controller
+            rules={{ required: true }}
             name="price"
             control={control}
             render={({ field }) => (
@@ -168,6 +170,7 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
           />
 
           <Controller
+            rules={{ required: true }}
             name="costPrice"
             control={control}
             render={({ field }) => (
@@ -176,6 +179,7 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
           />
 
           <Controller
+            rules={{ required: true }}
             name="stock"
             control={control}
             render={({ field }) => (
@@ -245,17 +249,16 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
           )} />
 
           {/* SUBMIT */}
-          <Button
+          <CustomButton
             variant="contained"
-            fullWidth
-            sx={{ mt: 4, py: 1.3, fontWeight: 600 }}
             disabled={isSubmitting}
             type="submit"
+            buttonType={'orange'}
           >
             {product
               ? isSubmitting ? "Updating Product..." : "Update Product"
               : isSubmitting ? "Creating Product..." : "Create Product"}
-          </Button>
+          </CustomButton>
         </form>
       </Box>
     </Box>

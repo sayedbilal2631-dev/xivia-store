@@ -11,7 +11,6 @@ const Footer = () => {
             sx={{
                 backgroundColor: "#0f172a",
                 color: "#e5e7eb",
-                mt: 10,
                 pt: 6,
                 pb: 3,
             }}
@@ -42,10 +41,10 @@ const Footer = () => {
                         <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                             Shop
                         </Typography>
-                        <FooterLink href="/products" label="All Products" />
-                        <FooterLink href="/categories" label="Categories" />
-                        <FooterLink href="/deals" label="Deals" />
-                        <FooterLink href="/new-arrivals" label="New Arrivals" />
+                        <FooterLink href="/aboutUs" label="All Products" />
+                        <FooterLink href="/aboutUs" label="Categories" />
+                        <FooterLink href="/aboutUs" label="Deals" />
+                        <FooterLink href="/aboutUs" label="New Arrivals" />
                     </Box>
 
                     {/* Company */}
@@ -53,10 +52,10 @@ const Footer = () => {
                         <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                             Company
                         </Typography>
-                        <FooterLink href="/about" label="About Us" />
-                        <FooterLink href="/contact" label="Contact" />
-                        <FooterLink href="/careers" label="Careers" />
-                        <FooterLink href="/blog" label="Blog" />
+                        <FooterLink href="/aboutUs" label="About Us" />
+                        <FooterLink href="/aboutUs" label="Contact" />
+                        <FooterLink href="/aboutUs" label="Careers" />
+                        <FooterLink href="/aboutUs" label="Blog" />
                     </Box>
 
                     {/* Legal */}
@@ -64,10 +63,10 @@ const Footer = () => {
                         <Typography variant="subtitle1" fontWeight={600} gutterBottom>
                             Legal
                         </Typography>
-                        <FooterLink href="/privacy-policy" label="Privacy Policy" />
-                        <FooterLink href="/terms" label="Terms & Conditions" />
-                        <FooterLink href="/refund-policy" label="Refund Policy" />
-                        <FooterLink href="/shipping" label="Shipping Info" />
+                        <FooterLink href="/aboutUs" label="Privacy Policy" />
+                        <FooterLink href="/aboutUs" label="Terms & Conditions" />
+                        <FooterLink href="/aboutUs" label="Refund Policy" />
+                        <FooterLink href="/aboutUs" label="Shipping Info" />
                     </Box>
 
                     {/* Social */}

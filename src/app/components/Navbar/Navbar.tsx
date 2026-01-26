@@ -2,8 +2,8 @@
 import { Box, Container, Typography } from '@mui/material';
 import Search from '../SearchBox/Search';
 import Icons from './NavbarIcons/Icons';
-import Link from 'next/link';
 import { ReactNode } from 'react';
+import Link from 'next/link';
 
 interface NavbarProps {
   search: string;
@@ -12,6 +12,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ search, onSearch, children }: NavbarProps) => {
+  
   return (
     <Box sx={{ width: '100%', boxShadow: '0px 0px 10px', py: 2, zIndex: 999 }}>
       <Container maxWidth="xl">

@@ -17,7 +17,6 @@ const UserStore = ({ open, setOpen }: any) => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const { firebaseUser } = useUser();
-    // const uid = firebaseUser?.uid;
 
     useEffect(() => {
         const fetchStoreData = async () => {

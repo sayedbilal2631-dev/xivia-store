@@ -57,6 +57,8 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
     <Card
       key={data.id}
       sx={{
+        width: '100%',
+        maxWidth: 250,
         borderRadius: 3,
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
         position: "relative",
@@ -73,7 +75,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
       onClick={() => goToProduct(data.id)}
     >
       {/* Image Section */}
-      <Box sx={{ position: "relative", overflow: "hidden", height: 250 }}>
+      <Box sx={{ position: "relative", overflow: "hidden", height: 200 }}>
         <Image
           src={
             hovered === data.id && data.images?.[1]
@@ -89,6 +91,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             transition: "all 0.5s ease",
             transform: hovered === data.id ? "scale(1.1)" : "scale(1)",
             cursor: "pointer",
+            borderRadius:3
           }}
         />
 

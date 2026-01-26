@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Typography, Divider, Paper, Button } from "@mui/material";
-import {  Facebook } from "@mui/icons-material";
+import { Box, Typography, Divider, Paper,  } from "@mui/material";
 import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
@@ -12,13 +11,11 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth } from "@/app/config/firebase";
-import MUIButton from "@/app/components/common/Button";
 import MUITextField from "@/app/components/common/TextField";
 import MUILoader from "@/app/components/common/Loader";
-import AuthButton from "@/app/components/common/AuthButton";
-import Image from "next/image";
 import { colors } from "@/app/constants/colors";
 import Link from "next/link";
+import CustomButton from "@/app/components/common/Button";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -27,32 +24,6 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const handleGoogleSignUp = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      setLoading(true);
-      await signInWithPopup(auth, provider);
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleFacebookSignUp = async () => {
-    const provider = new FacebookAuthProvider();
-    try {
-      setLoading(true);
-      await signInWithPopup(auth, provider);
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,7 +57,7 @@ export default function SignUpPage() {
         minHeight="100vh"
         justifyContent="center"
         alignItems="center"
-        sx={{ backgroundColor: "#fff5ef", pt:2 }}
+        sx={{ backgroundColor: "#fff5ef", pt: 2 }}
       >
         <Paper
           elevation={3}
@@ -106,44 +77,7 @@ export default function SignUpPage() {
 
           {/* Sign up with goolge and facebook */}
           <Box sx={{ mt: 3 }}>
-            <Button
-              onClick={handleGoogleSignUp}
-              fullWidth
-              variant="outlined"
-              sx={{
-                backgroundColor: "#fff",
-                color: "#000",
-                textTransform: "none",
-                border: "1px solid #dadce0",
-                borderRadius: "8px",
-                fontWeight: 500,
-                mb: 1.5,
-                py: 1,
-                "&:hover": {
-                  backgroundColor: "#f8f9fa",
-                },
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 1,
-              }}
-            >
-              <Image
-                src="https://developers.google.com/identity/images/g-logo.png"
-                alt="Google"
-                width='20'
-                height='20'
-              />
-              Sign up with Google
-            </Button>
 
-            <AuthButton
-              icon={<Facebook />}
-              label="Sign up with Facebook"
-              onClick={handleFacebookSignUp}
-            />
-
-            <Divider sx={{ my: 2 }}>OR</Divider>
 
             <form onSubmit={handleEmailSignUp}>
               <MUITextField
@@ -169,14 +103,14 @@ export default function SignUpPage() {
                 error={error && !password ? "Please enter a password" : ""}
               />
 
-              <MUIButton
+              <CustomButton
+                buttonType={'orange'}
                 type="submit"
                 fullWidth
-                color="warning"
                 isLoading={loading}
               >
                 Create account
-              </MUIButton>
+              </CustomButton>
             </form>
           </Box>
 
@@ -190,14 +124,14 @@ export default function SignUpPage() {
             sx={{
               display: "flex",
               alignItems: "center",
-              mt: 1,
+              mt: 2,
               justifyContent: "center",
             }}
           >
             <Typography variant="body2">Already have an account? </Typography>
-            <MUIButton variant="text" color="warning" onClick={nextPage}>
+            <CustomButton buttonType={'orangesd'} onClick={nextPage}>
               signIn
-            </MUIButton>
+            </CustomButton>
           </Box>
         </Paper>
 

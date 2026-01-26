@@ -43,6 +43,7 @@ export type StoreCategory =
   | 'automotive'
   | 'other';
 
+
 // Store Status Types
 export type StoreStatus = 'active' | 'inactive' | 'suspended' | 'pending';
 
@@ -109,7 +110,7 @@ export interface User {
 }
 
 // Product Categories
-export type ProductCategory =
+export type ProductCategory = 
   | 'electronics'
   | 'clothing'
   | 'home-kitchen'
@@ -125,6 +126,8 @@ export type ProductCategory =
   | 'office-supplies'
   | 'baby-products'
   | 'garden-outdoor';
+
+  
 
 // Product Status
 export type ProductStatus = 'active' | 'inactive' | 'out-of-stock' | 'discontinued';
@@ -252,7 +255,7 @@ export interface Order {
   orderNumber: string; // Unique human-readable order number
   storeId: DocumentReference;
   customerId: DocumentReference;
-  
+
   // Order Details
   items: OrderItem[];
   total: number;
@@ -260,16 +263,16 @@ export interface Order {
   shippingCost: number;
   taxAmount: number;
   discountAmount: number;
-  
+
   // Status
   status: OrderStatus;
   paymentStatus: PaymentStatus;
-  
+
   // Payment
   paymentMethod: PaymentMethod;
   paymentId?: string; // Payment gateway reference
   paidAt?: Timestamp;
-  
+
   // Shipping
   shippingAddress: {
     firstName: string;
@@ -282,7 +285,7 @@ export interface Order {
     zipCode: string;
     country: string;
   };
-  
+
   billingAddress?: {
     firstName: string;
     lastName: string;
@@ -294,16 +297,16 @@ export interface Order {
     zipCode: string;
     country: string;
   };
-  
+
   shippingMethod: ShippingMethod;
   trackingNumber?: string;
   shippedAt?: Timestamp;
   deliveredAt?: Timestamp;
-  
+
   // Customer Notes
   customerNotes?: string;
   adminNotes?: string;
-  
+
   // Timestamps
   createdAt: Timestamp;
   updatedAt: Timestamp;

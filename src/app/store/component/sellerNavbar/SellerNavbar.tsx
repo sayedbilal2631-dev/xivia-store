@@ -1,11 +1,12 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter, } from "next/navigation";
+import { auth } from "@/app/config/firebase";
 import { useUser } from "@/app/context/CurrentUser/CurrentUser";
 import { Message, ArrowBackRounded, } from "@mui/icons-material";
 import { useMessageNotification } from "@/app/context/MessageNotificartion/MessageNotificationContext";
 import { AppBar, Toolbar, Typography, IconButton, Box, Menu, MenuItem, Avatar, Badge, } from "@mui/material";
-import Link from "next/link";
 
 const SellerNavbar = () => {
     const router = useRouter();
@@ -77,14 +78,11 @@ const SellerNavbar = () => {
                     </IconButton>
 
                     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                        <MenuItem onClick={() => router.push("/store/profile")}>Profile</MenuItem>
-                        <MenuItem onClick={() => router.push("/store/settings")}>Settings</MenuItem>
+                        <MenuItem onClick={() => router.push("/storepages/settings")}>Settings</MenuItem>
                         <MenuItem
                             onClick={() => {
                                 handleMenuClose();
-                                router.push("/logout");
-                            }}
-                        >
+                                auth.signOut()}}>
                             Logout
                         </MenuItem>
                     </Menu>

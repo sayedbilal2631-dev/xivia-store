@@ -1,9 +1,9 @@
 "use client";
 import { Box, Drawer, IconButton, useMediaQuery, useTheme, } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { CloseSharp } from "@mui/icons-material";
 import SidebarContent from "./SidebarContent";
 import { useState } from "react";
-import { CloseSharp } from "@mui/icons-material";
 
 const drawerWidth = 260;
 

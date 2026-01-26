@@ -1,13 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Divider, Typography } from "@mui/material";
-import { Google, Facebook, LinkedIn } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { Box, Typography } from "@mui/material";
 import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import AuthButton from "@/app/components/common/AuthButton";
@@ -17,6 +13,7 @@ import { colors } from "@/app/constants/colors";
 import { auth } from "@/app/config/firebase";
 import Link from "next/link";
 import MUITextFieldEnhanced from "@/app/components/common/TextField";
+import CustomButton from "@/app/components/common/Button";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -24,30 +21,6 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const handleGoogleSignIn = async () => {
-    try {
-      setLoading(true);
-      await signInWithPopup(auth, new GoogleAuthProvider());
-      router.push("/");
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleFacebookSignIn = async () => {
-    try {
-      setLoading(true);
-      await signInWithPopup(auth, new FacebookAuthProvider());
-      router.push("/");
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,19 +44,7 @@ export default function SignInPage() {
       </Box>
 
       <AuthCard title="Sign in" subtitle="Use your last sign-in method">
-        <AuthButton
-          icon={<Google />}
-          label="Continue with Google"
-          onClick={handleGoogleSignIn}
-        />
-        <AuthButton
-          icon={<Facebook />}
-          label="Continue with Facebook"
-          onClick={handleFacebookSignIn}
-        />
-        <AuthButton icon={<LinkedIn />} label="Continue with LinkedIn" disabled />
-
-        <Divider sx={{ my: 2 }}>OR</Divider>
+  
 
         <form onSubmit={handleEmailSignIn}>
           <MUITextFieldEnhanced
@@ -122,9 +83,9 @@ export default function SignInPage() {
             New to Xivia Store?{" "}
 
           </Typography>
-          <MUIButton variant="text" color="warning" onClick={nextPage}>
+          <CustomButton buttonType={'orange'}  onClick={nextPage}>
             Create new account
-          </MUIButton>
+          </CustomButton>
         </Box>
       </AuthCard>
     </Box>

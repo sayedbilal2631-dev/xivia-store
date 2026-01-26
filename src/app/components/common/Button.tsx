@@ -15,7 +15,8 @@ const CustomButton: React.FC<MUIButtonProps> = ({
   type = "button",
   bgColor,
   buttonType = "default",
-  height
+  height,
+  
 }) => {
 
   // 🔥 Custom Styles Map

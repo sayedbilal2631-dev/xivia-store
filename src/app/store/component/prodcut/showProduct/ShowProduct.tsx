@@ -13,7 +13,7 @@ const ShowProduct = ({
   onDelete: (product: Product) => void;
 }) => {
   return (
-    <Box sx={{ width: 260 }}>
+    <Box sx={{ width: 260, height:'100%' }}>
       <Card
         variant="outlined"
         sx={{

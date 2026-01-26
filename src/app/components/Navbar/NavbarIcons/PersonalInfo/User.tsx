@@ -19,7 +19,7 @@ const User = () => {
     const [open, setOpen] = useState(false)
     const user = getCurrentUser();
     const router = useRouter();
-    const { name} = user || {};
+    const { name } = user || {};
     const userInfo = [
         { name: 'My Store', path: '/store', icon: <StoreIcon /> },
         { name: 'My Orders', path: '#', icon: <ShoppingBagIcon /> },
@@ -28,19 +28,19 @@ const User = () => {
         { name: 'Sign Out', path: '#', icon: <LogoutIcon /> },
     ];
     const nextPage = () => {
-        router.push('/auth/signIn')
+        router.push('/auth/signUp')
     }
     return (
         <Box>
             <Box sx={{ position: "relative", display: "inline-block", zIndex: 5 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <IconButton
+                    <IconButton 
                         onMouseEnter={() => setOpen(true)}
                         onMouseLeave={() => setOpen(false)}
                     >
                         <PersonOutline sx={{ color: 'black' }} />
                     </IconButton>
-                    <Typography onClick={nextPage} sx={{ color: 'black', cursor: 'pointer' }}>Sign in</Typography>
+                    <Typography onClick={nextPage} sx={{ color: 'black', cursor: 'pointer' }}>{user ? "" : 'Sign Up'}</Typography>
                 </Box>
                 {open && (
                     <Box
@@ -71,7 +71,7 @@ const User = () => {
                                         onMouseLeave={(e) => (e.currentTarget.style.color = "gray")}
                                         href={'/profile'} style={{ textDecoration: 'none', color: 'gray', cursor: 'pointer' }}>
                                         <PersonOutline />
-                                        {name ? (<Box component={'span'} sx={{display:'flex', flexDirection:'column'}}><Typography component={'span'} sx={{textTransform:'capitalize'}} fontWeight={'bold'} fontSize={12}>Hi {name}</Typography > <Typography component={'span'} fontSize={10}>View your profile</Typography></Box>) : ""}
+                                        {name ? (<Box component={'span'} sx={{ display: 'flex', flexDirection: 'column' }}><Typography component={'span'} sx={{ textTransform: 'capitalize' }} fontWeight={'bold'} fontSize={12}>Hi {name}</Typography > <Typography component={'span'} fontSize={10}>View your profile</Typography></Box>) : ""}
                                     </Link>
                                 </Typography>
                             </Box>

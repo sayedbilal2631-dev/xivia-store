@@ -1,41 +1,100 @@
 "use client";
 
-import { Alert, Grid } from "@mui/material";
+import { Alert, Grid, Pagination, Stack, Box } from "@mui/material";
 import GlobalCard from "../components/common/globalCard";
 import { useProducts } from "../hooks/prodcuts/useProduct";
+import { useUser } from "../context/CurrentUser/CurrentUser";
+import { useState } from "react";
 
 interface ProductsProps {
     selectedCategory: string | null;
-    search: string
+    search: string;
 }
 
-const Products = ({ selectedCategory, search }: ProductsProps) => {
-    const {
-        data: products = [],
-        isLoading,
-        isError,
-    } = useProducts(selectedCategory, search);
+const PRODUCTS_PER_PAGE = 30;
 
-    if (isLoading) return <Alert severity="info">Loading products...</Alert>;
-    if (isError) return <Alert severity="error">Error loading products</Alert>;
+const Products = ({ selectedCategory, search }: ProductsProps) => {
+    const { data: products = [], isLoading, error } = useProducts(selectedCategory, search);
+    const { firebaseUser } = useUser();
+    const [page, setPage] = useState(1);
+
+    // Correct total pages
+    const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+
+    // Slice products for current page
+    const paginatedProducts = products.slice(
+        (page - 1) * PRODUCTS_PER_PAGE,
+        page * PRODUCTS_PER_PAGE
+    );
+
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    if (isLoading)
+        return <Alert severity="info">Loading products...</Alert>;
+
+    if (error)
+        return (
+            <Alert severity="error">
+                {firebaseUser?.uid
+                    ? `Error loading products: ${error}`
+                    : `Create or Sign In To Your Account`}
+            </Alert>
+        );
 
     return (
-        <Grid container spacing={2}>
-            {products.length === 0 && (
-                <Alert severity="warning" sx={{ width: "100%" }}>
-                    No products found for this category
-                </Alert>
-            )}
+        <Box>
+            {/* Grid */}
+            <Box
+                sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: { xs: 2, sm: 2.5, md: 2 },
+                    justifyContent: "center",
+                    mt: 2,
+                }}
+            >
+                {paginatedProducts.length === 0 && (
+                    <Alert severity="warning" sx={{ width: "100%" }}>
+                        No products found for this category
+                    </Alert>
+                )}
 
-            {products.map((product) => (
-                <Grid
-                    key={product.id}
-                    size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
-                >
-                    <GlobalCard data={product} />
-                </Grid>
-            ))}
-        </Grid>
+                {paginatedProducts.map((product) => (
+                    <Box
+                        key={product.id}
+                        sx={{
+                            flex: {
+                                xs: "1 1 100%",
+                                sm: "1 1 calc(50% - 16px)",
+                                md: "1 1 calc(20% - 16px)",
+                                lg: "1 1 calc(20% - 10px)",
+                            },
+                        }}
+                    >
+                       
+                            <GlobalCard data={product} />
+                        </Box>
+                ))}
+            </Box>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <Stack direction="row" justifyContent="center" mt={4}>
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={handlePageChange}
+                        variant="outlined"
+                        shape="rounded"
+                        showFirstButton
+                        showLastButton
+                    />
+                </Stack>
+            )}
+        </Box>
     );
 };
 
