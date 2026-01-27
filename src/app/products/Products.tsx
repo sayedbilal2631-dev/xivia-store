@@ -1,9 +1,9 @@
 "use client";
 
-import { Alert, Grid, Pagination, Stack, Box } from "@mui/material";
-import GlobalCard from "../components/common/globalCard";
-import { useProducts } from "../hooks/prodcuts/useProduct";
+import { Alert, Pagination, Stack, Box } from "@mui/material";
 import { useUser } from "../context/CurrentUser/CurrentUser";
+import { useProducts } from "../hooks/prodcuts/useProduct";
+import GlobalCard from "../components/common/globalCard";
 import { useState } from "react";
 
 interface ProductsProps {
@@ -51,7 +51,7 @@ const Products = ({ selectedCategory, search }: ProductsProps) => {
                 sx={{
                     display: "flex",
                     flexWrap: "wrap",
-                    gap: { xs: 2, sm: 2.5, md: 2 },
+                    gap: { xs: 2, sm: 2, md: 2 },
                     justifyContent: "center",
                     mt: 2,
                 }}
@@ -63,20 +63,7 @@ const Products = ({ selectedCategory, search }: ProductsProps) => {
                 )}
 
                 {paginatedProducts.map((product) => (
-                    <Box
-                        key={product.id}
-                        sx={{
-                            flex: {
-                                xs: "1 1 100%",
-                                sm: "1 1 calc(50% - 16px)",
-                                md: "1 1 calc(20% - 16px)",
-                                lg: "1 1 calc(20% - 10px)",
-                            },
-                        }}
-                    >
-                       
-                            <GlobalCard data={product} />
-                        </Box>
+                        <GlobalCard key={product.id} data={product} />
                 ))}
             </Box>
 

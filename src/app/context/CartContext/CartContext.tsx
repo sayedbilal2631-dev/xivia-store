@@ -1,26 +1,54 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
+// import { CartService } from "@/app/hooks/cart/CartServices";
+// import { useUser } from "../CurrentUser/CurrentUser";
 
 interface CartContextType {
-  cartItems: number[];
+  cartItems: string[];        
   cartCount: number;
-  addToCart: (id: number) => void;
-  removeFromCart: (id: number) => void;
+  addToCart: (productId: string) => Promise<void>;
+  removeFromCart: (cartItemId: string) => Promise<void>; 
   clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<number[]>([]);
+  // const { firebaseUser } = useUser();
+  const [cartItems, setCartItems] = useState<string[]>([]);
 
-  const addToCart = (id: number) => {
-    setCartItems((prev) => [...prev, id]);
+  // ADD PRODUCT TO FIREBASE
+  const addToCart = async (productId: string) => {
+    // if (!firebaseUser) {
+    //   console.error("User not logged in");
+    //   return;
+    // }
+
+    try {
+      // await CartService.addToCart(productId, firebaseUser.uid);
+
+      // Local UI update (only for count display)
+      setCartItems((prev) => [...prev, productId]);
+    } catch (err) {
+      console.error("addToCart failed:", err);
+    }
   };
 
-  const removeFromCart = (id: number) => {
-    setCartItems((prev) => prev.filter((itemId) => itemId !== id));
+  // REMOVE PRODUCT FROM FIREBASE (by CART DOCUMENT ID)
+  const removeFromCart = async (cartItemId: string) => {
+    // if (!firebaseUser) {
+    //   console.error("User not logged in");
+    //   return;
+    // }
+
+    try {
+      // await CartService.deleteFromCart(cartItemId, firebaseUser.uid);
+
+      setCartItems((prev) => prev.filter((id) => id !== cartItemId));
+    } catch (err) {
+      console.error("removeFromCart failed:", err);
+    }
   };
 
   const clearCart = () => {
