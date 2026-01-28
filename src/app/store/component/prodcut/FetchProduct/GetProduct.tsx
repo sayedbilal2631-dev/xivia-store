@@ -1,5 +1,5 @@
 "use client";
-import { Box, Typography, CircularProgress, Button, Stack, IconButton, Pagination } from "@mui/material";
+import { Box, Typography, CircularProgress, Stack,  Pagination } from "@mui/material";
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
 import CustomDialog from "@/app/components/customDialog/CustomDialog";
 import CreateProductForm from "../uploadProduct/UploadProduct";
@@ -7,7 +7,6 @@ import useCurrentUser from "@/app/hooks/getCurrentUser";
 import ShowProduct from "../showProduct/ShowProduct";
 import { Product } from "@/app/collections/schema";
 import { useEffect, useState } from "react";
-import { ArrowForward } from "@mui/icons-material";
 
 const PRODUCTS_PER_PAGE = 6
 

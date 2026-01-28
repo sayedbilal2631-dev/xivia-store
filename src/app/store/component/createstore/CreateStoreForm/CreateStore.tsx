@@ -7,6 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import { auth } from "@/app/config/firebase";
 import { useRouter } from "next/navigation";
 import React from "react";
+import CustomButton from "@/app/components/common/Button";
 
 // Categories
 const categories: StoreCategory[] = [
@@ -87,13 +88,10 @@ const CreateStoreForm: React.FC = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" py={4} sx={{ width: { xs: '95%', md: '100%' } }}>
+    <Box display="flex" justifyContent="center" sx={{ width: { xs: '95%', md: '100%' } }}>
       <Card
         sx={{
           width: "100%",
-          p: 4,
-          borderRadius: 3,
-          boxShadow: "0 4px 25px rgba(0,0,0,0.08)",
         }}
       >
         <Typography variant="h5" fontWeight={600} mb={3}>
@@ -216,16 +214,13 @@ const CreateStoreForm: React.FC = () => {
               )
             )}
 
-            <Button
-              variant="contained"
-              color="primary"
+            <CustomButton
               type="submit"
-              fullWidth
-              sx={{ mt: 3, py: 1.3, fontWeight: 600 }}
+              buttonType={'orange'}
               disabled={isSubmitting}
             >
               {isSubmitting ? "Creating Store..." : "Create Store"}
-            </Button>
+            </CustomButton>
           </form>
         </CardContent>
       </Card>

@@ -11,7 +11,6 @@ const CartProduct = ({ data }: { data: any }) => {
     const { removeFromCart } = useCart();
     const router = useRouter();
     const shortTitle = data.name.split(" ").slice(0, 2).join(" ");
-
     return (
         <Card
             sx={{
@@ -28,8 +27,9 @@ const CartProduct = ({ data }: { data: any }) => {
             <Box sx={{ width: '70px', height: '70px', position: 'relative' }}>
                 <Image
                     src={data.thumbnail || image}
-                    alt={data.title}
+                    alt={data.name}
                     fill
+                    sizes="70px"
                     style={{ borderRadius: "8px", objectFit: "cover" }}
                 />
             </Box>

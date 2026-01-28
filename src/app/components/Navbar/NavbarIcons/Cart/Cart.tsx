@@ -10,17 +10,15 @@ const Cart = () => {
   const [openCart, setOpenCart] = useState(false);
   const { cartItems, cartCount, } = useCart();
   const [cartProducts, setCartProducts] = useState<any[]>([]);
-
   const handleToggleCart = (state: boolean) => () => {
     setOpenCart(state);
   };
-
   useEffect(() => {
     if (cartItems.length > 0) {
       // Fetch all products
       Promise.all(
         cartItems.map((id) =>
-          StoreService.getProductById(id)
+          StoreService.getProductById(id.productId)
         )
       ).then((data) => {
         setCartProducts(data);

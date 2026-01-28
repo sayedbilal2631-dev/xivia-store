@@ -1,9 +1,10 @@
-import { addDoc, collection, serverTimestamp, deleteDoc, doc, query, where, getDocs, } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp, deleteDoc, doc, query, where, getDocs, getDoc, } from "firebase/firestore";
 import { db } from "@/app/config/firebase";
+import { WhereToVote } from "@mui/icons-material";
 
 export class CartService {
 
-  static async addToCart(productId: string, firebaseUser: string) {
+  static async addToCart(productId: string, firebaseUser: any) {
     if (!firebaseUser) {
       throw new Error("User not authenticated");
     }
@@ -13,13 +14,13 @@ export class CartService {
     }
 
     try {
-      const ref = collection(db, "cart", firebaseUser);
+      const ref = collection(db, "cart");
 
       const q = query(ref, where("productId", "==", productId));
       const snapshot = await getDocs(q);
 
       if (!snapshot.empty) {
-        console.log("Product already in cart — skipping upload");
+        alert("Product already in cart — skipping upload");
         return;
       }
 
@@ -46,11 +47,38 @@ export class CartService {
     }
 
     try {
-      const ref = doc(db, "cart", firebaseUser, itemId);
-      await deleteDoc(ref);
+
+      const q = query(collection(db, 'cart'),
+        where('productId', '==', itemId),
+        where('userId', '==', firebaseUser))
+      const snapshot = await getDocs(q);
+      await Promise.all(
+        snapshot.docs.map((item) => deleteDoc(doc(db, 'cart', item.id)))
+      )
     } catch (err) {
       console.error("Delete from cart failed:", err);
       throw err;
+    }
+  }
+
+  static async getCartItem(firebaseUser: any) {
+    try {
+      if (!firebaseUser) return [];
+
+      const q = query(
+        collection(db, "cart"),
+        where("userId", "==", firebaseUser)
+      );
+
+      const snapshot = await getDocs(q);
+
+      return snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      return [];
     }
   }
 }

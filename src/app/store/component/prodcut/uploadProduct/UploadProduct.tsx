@@ -2,12 +2,12 @@
 import { Box, Typography, Switch, FormControlLabel, MenuItem, Select } from "@mui/material";
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
 import MUITextFieldEnhanced from "@/app/components/common/TextField";
-import { useForm, Controller } from "react-hook-form";
-import useCurrentUser from "@/app/hooks/getCurrentUser";
 import { ProductFormData } from "@/app/collections/types";
 import { productCategories } from "@/app/constants/store";
-import React, { useEffect } from "react";
 import CustomButton from "@/app/components/common/Button";
+import useCurrentUser from "@/app/hooks/getCurrentUser";
+import { useForm, Controller } from "react-hook-form";
+import React, { useEffect } from "react";
 
 const defaultValues: ProductFormData = {
   name: "",
@@ -86,7 +86,6 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
 
         alert("✅ Product created successfully!");
       }
-
       setOpen(false);
       reset(defaultValues);
     } catch (error) {
