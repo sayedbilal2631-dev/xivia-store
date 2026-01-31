@@ -17,12 +17,14 @@ interface BuyNowButtonProps {
     };
     quantity?: number;
     fullWidth?: boolean;
+    sessionFn: () => any;
 }
 
 const BuyNowButton = ({
     product,
     quantity = 1,
     fullWidth = false,
+    sessionFn
 }: BuyNowButtonProps) => {
     const { firebaseUser } = useUser();
     const [loading, setLoading] = useState(false);
@@ -44,7 +46,7 @@ const BuyNowButton = ({
                 productImage: product.image,
                 amount: product.price
             });
-
+            sessionFn();
             alert("Order placed successfully");
         } catch (error) {
             alert(`Failed to place order ${error}`);
@@ -55,6 +57,7 @@ const BuyNowButton = ({
 
     return (
         <CustomButton
+
             variant="contained"
             color="soft"
             fullWidth={fullWidth}

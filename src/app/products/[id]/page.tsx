@@ -8,8 +8,10 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "@/app/config/firebase";
+import image from '/public/product.jpg'
 import Image from "next/image";
 import Link from "next/link";
+import axios from 'axios'
 
 interface Product {
     id: string;
@@ -88,6 +90,27 @@ const ProductDetails = () => {
         else if (num > product.stock) setOrderQty(product.stock);
         else setOrderQty(num);
     };
+    
+    const handleCheckout = async () => {
+        try {
+            const res = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/create-checkout-session`,
+                {
+                    product: {
+                        name: product.name,
+                        price: product.price,
+                        image: product.images?.[0] || product.thumbnail,
+                    },
+                }
+            );
+
+            window.location.href = res.data.url;
+        } catch (error) {
+            console.error("Checkout failed", error);
+            alert("Checkout failed. Check backend logs.");
+        }
+    };
+
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Breadcrumbs separator={<NavigateNext fontSize="small" />} sx={{ mb: 4 }}>
@@ -112,7 +135,7 @@ const ProductDetails = () => {
                         >
                             {imageLoading && <CircularProgress />}
                             <Image
-                                src={product.images[selectedImage] || product.thumbnail}
+                                src={product.images[selectedImage] || product.thumbnail || image}
                                 alt={product.name}
                                 width={400}
                                 height={400}
@@ -196,9 +219,10 @@ const ProductDetails = () => {
                                     thumbnail: product.thumbnail,
                                     price: product.price,
                                     storeId: product.storeId,
-                                    image: product.images[0]
+                                    image: product.images[0] || image
                                 }}
                                 quantity={orderQty}
+                                sessionFn={handleCheckout}
                             />
                         </Stack>
                     </Stack>
