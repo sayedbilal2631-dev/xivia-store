@@ -33,9 +33,9 @@ const ProductDetails = () => {
     const router = useRouter();
 
     const [product, setProduct] = useState<Product | null>(null);
-    const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState(0);
     const [imageLoading, setImageLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [orderQty, setOrderQty] = useState(1);
 
     useEffect(() => {
@@ -81,8 +81,7 @@ const ProductDetails = () => {
         );
     }
 
-    const discountPrice =
-        product.price * (1 - product.discountPercentage / 100);
+
 
     const handleQtyChange = (value: string) => {
         const num = Number(value);
@@ -90,16 +89,17 @@ const ProductDetails = () => {
         else if (num > product.stock) setOrderQty(product.stock);
         else setOrderQty(num);
     };
-    
+
     const handleCheckout = async () => {
         try {
             const res = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}/create-checkout-session`,
                 {
                     product: {
-                        name: product.name,
+                        name: product.name.toUpperCase(),
                         price: product.price,
                         image: product.images?.[0] || product.thumbnail,
+                        quantity: orderQty
                     },
                 }
             );
@@ -110,7 +110,6 @@ const ProductDetails = () => {
             alert("Checkout failed. Check backend logs.");
         }
     };
-
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
             <Breadcrumbs separator={<NavigateNext fontSize="small" />} sx={{ mb: 4 }}>
@@ -182,7 +181,7 @@ const ProductDetails = () => {
                         </Box>
 
                         <Typography variant="h4" color="primary">
-                            ${discountPrice.toFixed(2)}
+                            ${product.price}
                         </Typography>
 
                         {/* Quantity */}

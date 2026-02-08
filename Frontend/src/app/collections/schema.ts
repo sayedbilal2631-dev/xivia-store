@@ -78,15 +78,13 @@ export interface StoreFormData {
     country: string;
   };
 
-  // Business Hours
-  // businessHours: Store['businessHours'];
-
   // Settings
   settings: {
     allowReturns: boolean;
     returnPeriod: number;
     minimumOrder: number;
     freeShippingThreshold: number;
+    currency: string;
   };
 
   // Social Media
@@ -96,6 +94,7 @@ export interface StoreFormData {
     twitter?: string;
   };
 }
+
 
 // User Interface
 export interface User {
@@ -110,7 +109,7 @@ export interface User {
 }
 
 // Product Categories
-export type ProductCategory = 
+export type ProductCategory =
   | 'electronics'
   | 'clothing'
   | 'home-kitchen'
@@ -127,7 +126,7 @@ export type ProductCategory =
   | 'baby-products'
   | 'garden-outdoor';
 
-  
+
 
 // Product Status
 export type ProductStatus = 'active' | 'inactive' | 'out-of-stock' | 'discontinued';
@@ -153,7 +152,7 @@ export interface Product {
     width: number;
     height: number;
   };
-  images: string[];
+  images: { url: string, publicId: string };
   primaryImage: string;
   hasVariants: boolean;
   variants?: ProductVariant[];

@@ -112,7 +112,7 @@ export interface MUIButtonProps {
   bgColor?: any
   buttonType?: any
   height?: any,
-  disabled?:any
+  disabled?: any
 }
 
 
@@ -141,7 +141,7 @@ export const defaultValues: ProductFormData = {
   allowBackorders: false,
   weight: 0,
   dimensions: { length: 0, width: 0, height: 0 },
-  images: [],
+  images: { url: '', productId},
   primaryImage: "",
   hasVariants: false,
   seo: { title: "", description: "", slug: "" },

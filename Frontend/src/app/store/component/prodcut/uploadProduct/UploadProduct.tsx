@@ -23,7 +23,7 @@ const defaultValues: ProductFormData = {
   allowBackorders: false,
   weight: 0,
   dimensions: { length: 0, width: 0, height: 0 },
-  images: [],
+  images: {},
   primaryImage: "",
   hasVariants: false,
   seo: { title: "", description: "", slug: "" },
