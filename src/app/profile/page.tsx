@@ -9,7 +9,7 @@ interface user {
   createdAt: string
 }
 const page = () => {
-  const user = useCurrentUser()
+  const {user} = useCurrentUser()
   const { name, email, createdAt }: user = user || {};
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: 2 }}>
