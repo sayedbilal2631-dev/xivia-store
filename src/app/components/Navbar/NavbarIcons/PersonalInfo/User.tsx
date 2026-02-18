@@ -1,23 +1,17 @@
 "use client"
+import {  Store as StoreIcon,  ShoppingBag as ShoppingBagIcon,  Message as MessageIcon,  LocalOffer as LocalOfferIcon,  Logout as LogoutIcon,} from '@mui/icons-material';
 import { Box, IconButton, Typography } from "@mui/material"
 import getCurrentUser from "@/app/hooks/getCurrentUser"
 import { PersonOutline } from "@mui/icons-material"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import Info from "./Info"
-import {
-    Store as StoreIcon,
-    ShoppingBag as ShoppingBagIcon,
-    Message as MessageIcon,
-    LocalOffer as LocalOfferIcon,
-    Logout as LogoutIcon,
-} from '@mui/icons-material';
 import Link from "next/link"
+import Info from "./Info"
 
 
 const User = () => {
     const [open, setOpen] = useState(false)
-    const user = getCurrentUser();
+    const {user} = getCurrentUser();
     const router = useRouter();
     const { name } = user || {};
     const userInfo = [
@@ -27,9 +21,11 @@ const User = () => {
         { name: 'My Coupens', path: '#', icon: <LocalOfferIcon /> },
         { name: 'Sign Out', path: '#', icon: <LogoutIcon /> },
     ];
+
     const nextPage = () => {
         router.push('/auth/signUp')
     }
+
     return (
         <Box>
             <Box sx={{ position: "relative", display: "inline-block", zIndex: 5 }}>

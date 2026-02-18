@@ -33,7 +33,7 @@ const ShowProduct = ({
         <CardMedia
           component="img"
           height="150"
-          image={data.images[0] || "/placeholder.png"}
+          image={data.primaryImage || "/placeholder.png"}
           alt={data.name}
           sx={{ objectFit: "cover" }}
         />

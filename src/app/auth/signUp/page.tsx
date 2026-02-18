@@ -1,21 +1,14 @@
 "use client";
-
-import { useState } from "react";
-import { Box, Typography, Divider, Paper,  } from "@mui/material";
-import { useRouter } from "next/navigation";
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import { auth } from "@/app/config/firebase";
+import { createUserWithEmailAndPassword, updateProfile,} from "firebase/auth";
 import MUITextField from "@/app/components/common/TextField";
+import CustomButton from "@/app/components/common/Button";
+import { Box, Typography, Paper, } from "@mui/material";
 import MUILoader from "@/app/components/common/Loader";
 import { colors } from "@/app/constants/colors";
+import { auth } from "@/app/config/firebase";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
-import CustomButton from "@/app/components/common/Button";
 
 export default function SignUpPage() {
   const router = useRouter();

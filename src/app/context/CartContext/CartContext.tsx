@@ -31,7 +31,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCartItems(data);
   };
 
-  // fetch cart when user logs in
   useEffect(() => {
     getCartItem();
   }, [firebaseUser]);

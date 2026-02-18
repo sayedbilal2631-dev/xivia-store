@@ -10,7 +10,7 @@ import Image from "next/image";
 const CartProduct = ({ data }: { data: any }) => {
     const { removeFromCart } = useCart();
     const router = useRouter();
-    const shortTitle = data.name.split(" ").slice(0, 2).join(" ");
+    // const shortTitle = data.name.split(" ").slice(0, 2).join(" ");
     return (
         <Card
             sx={{
@@ -26,7 +26,7 @@ const CartProduct = ({ data }: { data: any }) => {
             {/* Product Image */}
             <Box sx={{ width: '70px', height: '70px', position: 'relative' }}>
                 <Image
-                    src={data.thumbnail || image}
+                    src={data.primaryImage || image}
                     alt={data.name}
                     fill
                     sizes="70px"
@@ -36,7 +36,7 @@ const CartProduct = ({ data }: { data: any }) => {
             {/* Product Details */}
             <CardContent sx={{ flex: 1, ml: 2, p: 0 }}>
                 <Typography variant="subtitle2" fontWeight="bold" noWrap>
-                    {shortTitle}
+                    {data.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     ${data.price}

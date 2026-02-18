@@ -6,7 +6,7 @@ import { Box} from "@mui/material";
 import Link from "next/link";
 
 const Info = ({ data }: any) => {
-    const user = useCurrentUser()
+    const {user} = useCurrentUser()
     const handleSignOut = async (name: string) => {
         try {
             if (name === "Sign Out") {

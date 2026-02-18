@@ -78,7 +78,7 @@ const SellerNavbar = () => {
                     </IconButton>
 
                     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                        <MenuItem onClick={() => router.push("/storepages/settings")}>Settings</MenuItem>
+                        <MenuItem onClick={() => router.push("/store/pages/settings")}>Settings</MenuItem>
                         <MenuItem
                             onClick={() => {
                                 handleMenuClose();

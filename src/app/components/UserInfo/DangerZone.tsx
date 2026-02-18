@@ -1,7 +1,8 @@
 "use client";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { useUser } from "@/app/context/CurrentUser/CurrentUser";
-import { Box, Button, Typography } from "@mui/material";
+import { Box,  Typography } from "@mui/material";
+import CustomButton from "../common/Button";
 import { db } from "@/app/config/firebase";
 import { getAuth } from "firebase/auth";
 
@@ -21,7 +22,6 @@ const DangerZone = () => {
     const deleteAccount = async () => {
         const auth = getAuth();
         if (!auth.currentUser) return;
-
         await deleteDoc(doc(db, "users", auth.currentUser.uid));
         await deleteDoc(doc(db, "stores", auth.currentUser.uid));
         await auth.currentUser.delete();
@@ -36,13 +36,13 @@ const DangerZone = () => {
             </Typography>
 
             <Box display="flex" gap={2}>
-                <Button color="warning" variant="outlined" onClick={disableStore}>
+                <CustomButton buttonType={'soft'} onClick={disableStore}>
                     Disable Store
-                </Button>
+                </CustomButton>
 
-                <Button color="error" variant="contained" onClick={deleteAccount}>
+                <CustomButton buttonType={'orange'}  variant="contained" onClick={deleteAccount}>
                     Delete Account
-                </Button>
+                </CustomButton>
             </Box>
         </Box>
     );

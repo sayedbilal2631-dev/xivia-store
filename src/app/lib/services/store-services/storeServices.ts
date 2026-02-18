@@ -9,6 +9,7 @@ import {
   OrderStatus, PaymentStatus, ProductStatus, ProductCategory
 } from '@/app/collections/schema';
 import { db } from '@/app/config/firebase';
+import { toast } from 'react-toastify';
 
 export class StoreService {
   static async createStore(storeData: Partial<Store>): Promise<string> {
@@ -148,18 +149,19 @@ export class StoreService {
       });
       return productRef.id;
     } catch (error) {
-      console.error('Error creating product:', error);
+      toast.error(`Error creating product: ${error}`);
       throw new Error(`Failed to create product: ${error}`);
     }
   }
 
+  // Get single product 
   static async getProductById(id: string | any) {
     try {
       const ref = doc(db, "products", id);
       const snap = await getDoc(ref);
 
       if (!snap.exists()) {
-        throw new Error("Product not found");
+        toast.error("Your cart product are no longer available");
       }
 
       return {
@@ -167,7 +169,7 @@ export class StoreService {
         ...snap.data(),
       };
     } catch (error: any) {
-      console.error("getProductById failed:", error);
+      toast.error(`getProductById failed: ${error}`);
       throw new Error(`Error occurred while fetching product: ${error.message}`);
     }
   }

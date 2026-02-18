@@ -12,7 +12,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ search, onSearch, children }: NavbarProps) => {
-  
+
   return (
     <Box sx={{ width: '100%', boxShadow: '0px 0px 10px', py: 2, zIndex: 999 }}>
       <Container maxWidth="xl">
@@ -28,7 +28,7 @@ const Navbar = ({ search, onSearch, children }: NavbarProps) => {
           <Typography variant="h4" fontWeight="bold">
             <Link
               href="/"
-              style={{ textDecoration: 'none', color: 'black' }}
+              style={{ textDecoration: 'none', color: 'black',  }}
             >
               Store
             </Link>
@@ -36,9 +36,9 @@ const Navbar = ({ search, onSearch, children }: NavbarProps) => {
 
           {/* Search connected to page state */}
           <Search value={search} onSearch={onSearch} />
-          <Box sx={{display:'flex', gap:'20px'}}>
+          {children}
+          <Box sx={{ display: 'flex', gap: '20px', }}>
             <Icons />
-            {children}
           </Box>
         </Box>
       </Container>

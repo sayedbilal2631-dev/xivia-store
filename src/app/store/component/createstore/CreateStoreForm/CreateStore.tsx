@@ -1,17 +1,5 @@
 "use client";
-import React from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Switch,
-  FormControlLabel,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, } from "@mui/material";
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
 import { StoreFormData, StoreCategory } from "@/app/collections/schema";
 import MUITextFieldEnhanced from "@/app/components/common/TextField";
@@ -20,6 +8,9 @@ import { useForm, Controller } from "react-hook-form";
 import { auth } from "@/app/config/firebase";
 import { useRouter } from "next/navigation";
 import currencyCodes from "currency-codes";
+import React from "react";
+import { useUser } from "@/app/context/CurrentUser/CurrentUser";
+import { toast } from "react-toastify";
 
 // Categories
 const categories: StoreCategory[] = [
@@ -45,6 +36,7 @@ const defaultValues: StoreFormData = {
   storeName: "",
   description: "",
   category: "other",
+  sellerStripeId: '',
   email: "",
   phone: "",
   website: "",
@@ -70,7 +62,7 @@ const defaultValues: StoreFormData = {
 };
 
 const CreateStoreForm: React.FC = () => {
-  const user = auth.currentUser;
+  const { firebaseUser } = useUser();
   const router = useRouter();
 
   const {
@@ -83,24 +75,24 @@ const CreateStoreForm: React.FC = () => {
   });
 
   const onSubmit = async (data: StoreFormData) => {
-    if (!user) {
-      alert("Please sign in first.");
+    if (!firebaseUser?.uid) {
+      toast.error("Please sign in first.");
       return;
     }
 
     try {
       const storeId = await StoreService.createStore({
         ...data,
-        ownerId: user.uid,
+        ownerId: firebaseUser.uid,
         createdAt: new Date(),
         updatedAt: new Date(),
         isVerified: false,
       });
-      alert(`✅ Store created successfully (ID: ${storeId})`);
+      alert(` Store created successfully (ID: ${storeId})`);
       reset(defaultValues);
       router.push("/store");
     } catch (error) {
-      console.error("❌ Error creating store:", error);
+      console.error(" Error creating store:", error);
       alert("Failed to create store. Check console for details.");
     }
   };
@@ -170,7 +162,7 @@ const CreateStoreForm: React.FC = () => {
             <Typography variant="h6" fontWeight={600} mt={3}>
               Contact Info
             </Typography>
-
+            {/* email */}
             <Controller
               name="email"
               control={control}
@@ -180,6 +172,17 @@ const CreateStoreForm: React.FC = () => {
               }}
               render={({ field, fieldState }) => (
                 <MUITextFieldEnhanced {...field} label="Email" fullWidth margin="normal" error={fieldState.error?.message} />
+              )}
+            />
+            {/* stripe id */}
+            <Controller
+              name="sellerStripeId"
+              control={control}
+              rules={{
+                required: "stripeId is required",
+              }}
+              render={({ field, fieldState }) => (
+                <MUITextFieldEnhanced {...field} label="stripeId" fullWidth margin="normal" error={fieldState.error?.message} />
               )}
             />
 

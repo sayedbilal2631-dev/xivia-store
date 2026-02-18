@@ -9,6 +9,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import image from '/public/product.jpg'
 import { useState } from "react";
 import Image from "next/image";
@@ -33,7 +34,6 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
     setWishlisted((prev) => !prev);
   };
 
-
   const handleAskPrice = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (loading || !firebaseUser) return;
@@ -45,13 +45,13 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
       );
       router.push(`/store/pages/messages`);
     } catch (error) {
-      alert(error)
+      
       console.error("Failed to create conversation:", error);
+      toast.error(`Failed to create conversation ${error}`);
     } finally {
       setLoadingChat(false);
     }
   };
-
 
   return (
     <Card
@@ -78,9 +78,9 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
       <Box sx={{ position: "relative", overflow: "hidden", height: 200 }}>
         <Image
           src={
-            hovered === data.id && data.images?.[1]
-              ? data.images[1]
-              : data.thumbnail
+            hovered === data.id
+              ? data.images[1] || data.images[0]
+              : data.primaryImage
               || image
           }
           alt={data.name}
@@ -91,7 +91,7 @@ const GlobalCard = ({ data }: GlobalCardProps) => {
             transition: "all 0.5s ease",
             transform: hovered === data.id ? "scale(1.1)" : "scale(1)",
             cursor: "pointer",
-            borderRadius:3
+            borderRadius: 3
           }}
         />
 

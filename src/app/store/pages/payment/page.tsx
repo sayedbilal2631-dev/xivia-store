@@ -1,8 +1,10 @@
+import { Box } from '@mui/material'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>Payment</div>
+    <Box>Payment
+    </Box>
   )
 }
 

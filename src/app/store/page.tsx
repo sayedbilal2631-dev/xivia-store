@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Container } from "@mui/material";
 import UserStore from "./component/createstore/getstore/UserStore";
+import { Box, Container } from "@mui/material";
+import React from "react";
 
 const page = () => {
   return (

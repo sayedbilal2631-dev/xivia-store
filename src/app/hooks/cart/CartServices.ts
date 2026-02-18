@@ -1,6 +1,5 @@
 import { addDoc, collection, serverTimestamp, deleteDoc, doc, query, where, getDocs, getDoc, } from "firebase/firestore";
 import { db } from "@/app/config/firebase";
-import { WhereToVote } from "@mui/icons-material";
 
 export class CartService {
 

@@ -3,12 +3,12 @@ import { StoreService } from "@/app/lib/services/store-services/storeServices";
 import CreateProductForm from "../../prodcut/uploadProduct/UploadProduct";
 import CustomDialog from "@/app/components/customDialog/CustomDialog";
 import StoreDescription from "../storeDescription/StoreDescription";
+import { useUser } from "@/app/context/CurrentUser/CurrentUser";
+import CreateStoreForm from "../CreateStoreForm/CreateStore";
 import { Box, CircularProgress, Alert } from "@mui/material";
 import { Product, Store } from "@/app/collections/schema";
-import React, { useEffect, useState } from "react";
 import MUIButton from "@/app/components/common/Button";
-import CreateStoreForm from "../CreateStoreForm/CreateStore";
-import { useUser } from "@/app/context/CurrentUser/CurrentUser";
+import React, { useEffect, useState } from "react";
 
 
 const UserStore = ({ open, setOpen }: any) => {

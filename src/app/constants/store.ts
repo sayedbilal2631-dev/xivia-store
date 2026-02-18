@@ -1,13 +1,6 @@
 import { StoreCategory } from '@/app/collections/store';
 import { ProductCategory } from '../collections/schema';
-import {
-  Dashboard,
-  MailOutline,
-  ShoppingCart,
-  Payments,
-  BookmarkBorder,
-  Settings,
-} from "@mui/icons-material";
+import { MailOutline, ShoppingCart, Payments, Settings, Store} from "@mui/icons-material";
 
 export const STORE_CATEGORIES = [
   { value: 'fashion' as StoreCategory, label: 'Fashion & Apparel' },
@@ -61,20 +54,13 @@ export const sidebarSections = [
   {
     title: "Online trading",
     items: [
-      { label: "Dashboard", href: "/store", icon: Dashboard },
+      { label: "My Store", href: "/store", icon: Store },
+      // { label: "Dashboard", href: "/store", icon: Dashboard },
       { label: "Messages", href: "/store/pages/messages", icon: MailOutline },
       { label: "Orders", href: "/store/pages/orders", icon: ShoppingCart },
       { label: "Payment", href: "/store/pages/payment", icon: Payments },
-      { label: "Saved & history", href: "/store/pages/saved-history", icon: BookmarkBorder },
     ],
   },
-  // {
-  //   title: "Add-on services",
-  //   items: [
-  //     { label: "Logistics services", href: "/store/pages/logistics", icon: LocalShipping },
-  //     { label: "Dropshipping", href: "/store/pages/dropshipping", icon: Layers },
-  //   ],
-  // },
   {
     title: "Settings",
     items: [

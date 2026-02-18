@@ -1,5 +1,5 @@
 'use client';
-import { Box, TextField, InputAdornment, alpha, IconButton,  } from "@mui/material";
+import { Box, TextField, InputAdornment, alpha, IconButton, } from "@mui/material";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -66,7 +66,7 @@ const Search = ({ value, onSearch }: SearchProps) => {
     }}>
       <Box sx={{
         position: "relative",
-        width: { xs: "100%", sm: "450px", md: "600px" }
+        width: { xs: "100%", sm: "450px", md: "500px", lg: '600px' }
       }}>
         {/* Glow effect behind search */}
         <Box sx={{

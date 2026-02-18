@@ -56,8 +56,8 @@ export interface StatsCardProps {
 
 export interface MUITextFieldProps {
   label: string;
-  type?: "text" | "password" | "email" | "number";
-  value: string | undefined | number | null;
+  type?: "text" | "password" | "email" | "number" | "file";
+  value?: string | undefined | number | null;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   fullWidth?: boolean;
@@ -68,6 +68,8 @@ export interface MUITextFieldProps {
   disabled?: boolean;
   required?: boolean;
   placeholder?: string;
+  inputProps?: any;
+  InputLabelProps?: any
 }
 
 export interface MUIModalProps {
@@ -141,11 +143,13 @@ export const defaultValues: ProductFormData = {
   allowBackorders: false,
   weight: 0,
   dimensions: { length: 0, width: 0, height: 0 },
-  images: { url: '', productId},
-  primaryImage: "",
+  images: [],
+  // primaryImage: { url: '', publicId: '' },
+  primaryImage: '',
   hasVariants: false,
   seo: { title: "", description: "", slug: "" },
   status: "draft" as any,
   isFeatured: false,
+  sellerStripeId: ''
 };
 

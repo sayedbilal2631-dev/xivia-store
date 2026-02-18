@@ -3,6 +3,7 @@ import ReactQueryProvider from "./components/ReactQueryProvider/ReactQueryProvid
 import { CartProvider } from "./context/CartContext/CartContext";
 import DialogContext from "./context/CustomDialog/DialogContext";
 import { UserProvider } from "./context/CurrentUser/CurrentUser";
+import ToastProvider from "./components/Toast/ToastProvider";
 import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "./components/Footer/Footer";
 import type { Metadata } from "next";
@@ -28,7 +29,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const isDarkmode: boolean = false;
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
@@ -37,9 +37,10 @@ export default function RootLayout({
             <MessageNotificationProvider>
               <DialogContext>
                 <CartProvider>
-                  {/* <Navbar /> */}
                   {children}
                   <Footer />
+
+                  <ToastProvider />
                 </CartProvider>
               </DialogContext>
             </MessageNotificationProvider>

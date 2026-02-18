@@ -1,18 +1,9 @@
 "use client";
-
-import {
-    Box,
-    Typography,
-    Select,
-    MenuItem,
-    FormControl,
-    Card,
-    CardContent,
-} from "@mui/material";
+import { Box, Typography, Select, MenuItem, FormControl, Card, CardContent,} from "@mui/material";
+import { useUser } from "@/app/context/CurrentUser/CurrentUser";
 import { ArrowDropDown, Inventory } from "@mui/icons-material";
 import GetProduct from "../FetchProduct/GetProduct";
 import React, { useState } from "react";
-import { useUser } from "@/app/context/CurrentUser/CurrentUser";
 
 const Product = ({ isProduct }: any) => {
     const [sortOption, setSortOption] = useState("mostRecent");

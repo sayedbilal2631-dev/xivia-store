@@ -1,23 +1,23 @@
 'use client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Box, Container, Drawer, IconButton } from '@mui/material';
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/Navbar/Navbar';
-import { Box, Container, Drawer, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import Products from './products/Products';
 import { useState } from 'react';
-import MenuIcon from '@mui/icons-material/Menu';
 
 const Page = () => {
-  const [queryClient] = useState(() => new QueryClient());
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [search, setSearch] = useState("");
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+  const [queryClient] = useState(() => new QueryClient());
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width:'100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%' }}>
         {/* Navbar with hamburger menu */}
         <Navbar search={search} onSearch={setSearch}>
           <IconButton
@@ -32,9 +32,13 @@ const Page = () => {
                 transform: 'scale(1.1)',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
               },
-              borderRadius: 2,
+              borderRadius: "50%",
               transition: 'all 0.3s ease',
               color: '#ffffff',
+              position: 'fixed',
+              top: '30px',
+              left: '20px',
+              zIndex:'999'
             }}
             onClick={handleDrawerToggle}
           >

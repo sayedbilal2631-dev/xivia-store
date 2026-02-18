@@ -1,10 +1,10 @@
 "use client";
+import {  SendIcon } from "lucide-react";
 import { db } from "@/app/config/firebase";
 import { useState, useEffect, useRef } from "react";
 import { sendMessage } from "@/app/services/messages/messagingServices";
 import { Box, TextField, Button,  Typography } from "@mui/material";
 import { collection, query,  orderBy, onSnapshot, updateDoc, doc } from "firebase/firestore";
-import {  SendIcon } from "lucide-react";
 
 interface ChatProps {
   conversationId: string;

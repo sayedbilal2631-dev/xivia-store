@@ -8,6 +8,7 @@ const nextConfig = {
       { protocol: "https", hostname: "plus.unsplash.com" },
       { protocol: "https", hostname: "developers.google.com" },
       { protocol: "https", hostname: "www.pexels.com" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
   eslint: {

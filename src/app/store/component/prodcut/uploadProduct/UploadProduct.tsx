@@ -1,20 +1,24 @@
 "use client";
-import { Box, Typography, Switch, FormControlLabel, MenuItem, Select } from "@mui/material";
+
 import { StoreService } from "@/app/lib/services/store-services/storeServices";
 import MUITextFieldEnhanced from "@/app/components/common/TextField";
+import { Box, Typography, MenuItem, Select } from "@mui/material";
+import CustomButton from "@/app/components/common/Button";
 import { ProductFormData } from "@/app/collections/types";
 import { productCategories } from "@/app/constants/store";
-import CustomButton from "@/app/components/common/Button";
+import { uploadToCloudinary } from "@/app/lib/cloudinary";
 import useCurrentUser from "@/app/hooks/getCurrentUser";
 import { useForm, Controller } from "react-hook-form";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Button } from "./Button";
+import { toast } from "react-toastify";
 
 const defaultValues: ProductFormData = {
   name: "",
   description: "",
   price: null,
   costPrice: null,
-  category: 'automotive',
+  category: "automotive",
   tags: [],
   sku: "",
   barcode: "",
@@ -23,33 +27,40 @@ const defaultValues: ProductFormData = {
   allowBackorders: false,
   weight: 0,
   dimensions: { length: 0, width: 0, height: 0 },
-  images: {},
   primaryImage: "",
+  images: [],
   hasVariants: false,
   seo: { title: "", description: "", slug: "" },
-  status: "draft" as any,
+  status: "active",
   isFeatured: false,
+  sellerStripeId: ''
 };
 
 interface Props {
   open: boolean;
   setOpen: (val: boolean) => void;
-  product?: ProductFormData | any;
+  product?: any;
 }
 
 const CreateProductForm = ({ open, setOpen, product }: Props) => {
-  const user = useCurrentUser();
+  const { user, sellerStripeId } = useCurrentUser();
+  const [uploading, setUploading] = useState(false);
+
 
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { isSubmitting },
   } = useForm<ProductFormData>({
     defaultValues,
   });
 
-  /* fill the textfield while editing */
+  const primaryImage = watch("primaryImage");
+  const images = watch("images");
+  
   useEffect(() => {
     if (product) {
       reset({
@@ -61,61 +72,69 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
     }
   }, [product, reset]);
 
-  // submit handler
   const onSubmit = async (data: ProductFormData) => {
     if (!user) {
-      alert("Please sign in first.");
+      toast.error("Please sign in first.");
       return;
     }
 
     try {
       if (product) {
-        // UPDATE MODE
         await StoreService.updateProduct(product.id, {
           ...data,
           storeId: user.uid,
         });
-
-        alert("✅ Product updated successfully!");
+        toast.success("Product updated successfully!");
       } else {
-        // CREATE MODE
         await StoreService.createProduct({
           ...data,
           storeId: user.uid,
+          sellerStripeId: sellerStripeId
         });
-
-        alert("✅ Product created successfully!");
+        toast.success("Product created successfully!");
       }
-      setOpen(false);
+
       reset(defaultValues);
+      setOpen(false);
     } catch (error) {
-      console.error("❌ Error saving product:", error);
-      alert("Failed to save product. Check console for details.");
+      console.error("Error saving product:", error);
+      toast.error("Failed to save product.");
     }
   };
 
-  /* UI  */
+  const removePrimaryImage = () => {
+    const currentImages = watch("images") || [];
+
+    if (currentImages.length > 0) {
+      setValue("primaryImage", currentImages[0]);
+      setValue("images", currentImages.slice(1));
+    } else {
+      setValue("primaryImage", "");
+    }
+  };
+
+  const removeGalleryImage = (index: number) => {
+    const currentImages = watch("images") || [];
+    setValue(
+      "images",
+      currentImages.filter((_, i) => i !== index)
+    );
+  };
+
   return (
     <Box display="flex" justifyContent="center" py={4}>
-      <Box sx={{ width: "100%", p: { xs: 0.5, md: 4 } }}>
+      <Box sx={{ width: "100%", p: { xs: 1, md: 4 } }}>
         <Typography variant="h5" fontWeight={600} mb={3}>
           {product ? "Update Product" : "Create New Product"}
         </Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* BASIC INFO */}
           <Controller
             name="name"
             control={control}
             rules={{ required: "Product name is required" }}
-            render={({ field, fieldState }) => (
-              <MUITextFieldEnhanced
-                {...field}
-                label="Product Name"
-                fullWidth
-                margin="normal"
-                error={fieldState.error?.message}
-              />
+            render={({ field }) => (
+              <MUITextFieldEnhanced {...field} label="Product Name" fullWidth />
             )}
           />
 
@@ -129,24 +148,37 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
                 fullWidth
                 multiline
                 rows={3}
-                margin="normal"
               />
             )}
           />
 
-          {/* CATEGORY */}
+          <Controller
+            name="sku"
+            control={control}
+            render={({ field }) => (
+              <MUITextFieldEnhanced {...field} label="SKU" fullWidth />
+            )}
+          />
+
+          <Controller
+            name="barcode"
+            control={control}
+            render={({ field }) => (
+              <MUITextFieldEnhanced {...field} label="Barcode" fullWidth />
+            )}
+          />
+
+          <Typography mt={2} fontWeight={600}>
+            Category
+          </Typography>
+
           <Controller
             name="category"
             control={control}
-            rules={{ required: 'Select Product Categroy' }}
             render={({ field }) => (
-              <Select
-                sx={{ backgroundColor: "#f9f9f9", borderRadius: "16px" }}
-                {...field}
-                fullWidth
-              >
-                {productCategories.map((cat, i) => (
-                  <MenuItem key={i} value={cat.value}>
+              <Select {...field} fullWidth sx={{ mt: 1 }}>
+                {productCategories.map((cat) => (
+                  <MenuItem key={cat.value} value={cat.value}>
                     {cat.label}
                   </MenuItem>
                 ))}
@@ -154,110 +186,202 @@ const CreateProductForm = ({ open, setOpen, product }: Props) => {
             )}
           />
 
-          {/* PRICING & STOCK */}
-          <Typography variant="h6" fontWeight={600} mt={3}>
-            Pricing & Stock
+          <Typography variant="h6" fontWeight={600} mt={4}>
+            Pricing
           </Typography>
 
           <Controller
-            rules={{ required: true }}
             name="price"
             control={control}
             render={({ field }) => (
-              <MUITextFieldEnhanced {...field} type="number" label="Price ($)" fullWidth margin="normal" />
+              <MUITextFieldEnhanced {...field} label="Price" type="number" />
             )}
           />
 
           <Controller
-            rules={{ required: true }}
             name="costPrice"
             control={control}
             render={({ field }) => (
-              <MUITextFieldEnhanced {...field} type="number" label="Cost Price ($)" fullWidth margin="normal" />
+              <MUITextFieldEnhanced
+                {...field}
+                label="Cost Price"
+                type="number"
+              />
             )}
           />
 
           <Controller
-            rules={{ required: true }}
             name="stock"
             control={control}
             render={({ field }) => (
-              <MUITextFieldEnhanced {...field} type="number" label="Stock" fullWidth margin="normal" />
+              <MUITextFieldEnhanced {...field} label="Stock" type="number" />
             )}
           />
 
-          {/* SKU & BARCODE */}
-          <Controller name="sku" control={control} render={({ field }) => (
-            <MUITextFieldEnhanced {...field} label="SKU" fullWidth margin="normal" />
-          )} />
+          <Typography variant="h6" fontWeight={600} mt={4}>
+            Shipping Info
+          </Typography>
 
-          <Controller name="barcode" control={control} render={({ field }) => (
-            <MUITextFieldEnhanced {...field} label="Barcode" fullWidth margin="normal" />
-          )} />
+          <Controller
+            name="weight"
+            control={control}
+            render={({ field }) => (
+              <MUITextFieldEnhanced {...field} label="Weight (kg)" />
+            )}
+          />
 
-          {/* IMAGES */}
-          <Typography variant="h6" fontWeight={600} mt={3}>
-            Images
+          <Typography variant="h6" fontWeight={600} mt={4}>
+            SEO Settings
+          </Typography>
+
+          <Controller
+            name="seo.title"
+            control={control}
+            render={({ field }) => (
+              <MUITextFieldEnhanced {...field} label="SEO Title" fullWidth />
+            )}
+          />
+
+          <Controller
+            name="seo.description"
+            control={control}
+            render={({ field }) => (
+              <MUITextFieldEnhanced
+                {...field}
+                label="SEO Description"
+                fullWidth
+              />
+            )}
+          />
+
+          <Controller
+            name="seo.slug"
+            control={control}
+            render={({ field }) => (
+              <MUITextFieldEnhanced {...field} label="SEO Slug" fullWidth />
+            )}
+          />
+
+          <Typography mt={3} fontWeight={600}>
+            Status
+          </Typography>
+
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} fullWidth>
+                <MenuItem value="active">Active</MenuItem>
+                <MenuItem value="draft">Draft</MenuItem>
+                <MenuItem value="archived">Archived</MenuItem>
+              </Select>
+            )}
+          />
+
+          <Typography variant="h6" fontWeight={600} mt={4}>
+            Primary Image
           </Typography>
 
           <Controller
             name="primaryImage"
             control={control}
-            render={({ field }) => (
-              <MUITextFieldEnhanced {...field} label="Primary Image URL" fullWidth margin="normal" />
+            render={() => (
+              <MUITextFieldEnhanced
+                type="file"
+                fullWidth
+                label=""
+                margin="normal"
+                inputProps={{
+                  accept: "image/*",
+                  multiple: true,
+                }}
+                InputLabelProps={{ shrink: true }}
+                onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                  const files: File[] = Array.from(
+                    e.target.files as FileList
+                  );
+
+                  if (files.length === 0) return;
+
+                  setUploading(true);
+
+                  try {
+                    const uploadedUrls: string[] = [];
+
+                    for (const file of files) {
+                      const uploaded = await uploadToCloudinary(file);
+                      uploadedUrls.push(uploaded.url);
+                    }
+
+                    const existingPrimary = watch("primaryImage");
+                    const existingImages = watch("images") || [];
+
+                    if (!existingPrimary) {
+                      setValue("primaryImage", uploadedUrls[0]);
+                      setValue("images", [
+                        ...existingImages,
+                        ...uploadedUrls.slice(0),
+                      ]);
+                    } else {
+                      setValue("images", [...existingImages, ...uploadedUrls]);
+                    }
+                  } catch (error) {
+                    console.error("Upload failed:", error);
+                  }
+
+                  setUploading(false);
+                  e.target.value = "";
+                }}
+              />
             )}
           />
 
-          {/* SWITCHES */}
-          <Box mt={2}>
-            {["trackQuantity", "allowBackorders", "isFeatured"].map((name: any) => (
-              <FormControlLabel
-                key={name}
-                control={
-                  <Controller
-                    name={name}
-                    control={control}
-                    render={({ field }) => (
-                      <Switch
-                        checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)}
-                      />
-                    )}
-                  />
-                }
-                label={name}
-              />
-            ))}
-          </Box>
+          {primaryImage && (
+            <Box mt={3}>
+              <Typography fontWeight={600}>Primary Image Preview:</Typography>
 
-          {/* SEO */}
-          <Typography variant="h6" fontWeight={600} mt={3}>
-            SEO Settings
+              <Box position="relative" display="inline-block" mt={1}>
+                <img title="Image" src={primaryImage} width={200} />
+
+                <Button
+                  type="button"
+                  onclick={removePrimaryImage} />
+              </Box>
+            </Box>
+          )}
+
+          {images?.length > 0 && (
+            <Box mt={3}>
+              <Typography fontWeight={600}>Other Images Preview:</Typography>
+
+              <Box display="flex" gap={2} flexWrap="wrap" mt={2}>
+                {images.map((img, i) => (
+                  <Box key={i} position="relative">
+                    <img title="Image" src={img} width={120} />
+
+                    <Button
+                      type="button"
+                      onclick={() => removeGalleryImage(i)} />
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+          )}
+
+          <Typography variant="h6" fontWeight={600} mt={4}>
+            Options
           </Typography>
 
-          <Controller name="seo.title" control={control} render={({ field }) => (
-            <MUITextFieldEnhanced {...field} label="SEO Title" fullWidth margin="normal" />
-          )} />
-
-          <Controller name="seo.description" control={control} render={({ field }) => (
-            <MUITextFieldEnhanced {...field} label="SEO Description" fullWidth multiline rows={2} margin="normal" />
-          )} />
-
-          <Controller name="seo.slug" control={control} render={({ field }) => (
-            <MUITextFieldEnhanced {...field} label="Slug" fullWidth margin="normal" />
-          )} />
-
-          {/* SUBMIT */}
-          <CustomButton
-            variant="contained"
-            disabled={isSubmitting}
-            type="submit"
-            buttonType={'orange'}
-          >
-            {product
-              ? isSubmitting ? "Updating Product..." : "Update Product"
-              : isSubmitting ? "Creating Product..." : "Create Product"}
-          </CustomButton>
+          <Box mt={4}>
+            <CustomButton
+              variant="contained"
+              disabled={isSubmitting || uploading}
+              type="submit"
+              buttonType="orange"
+            >
+              {product ? "Update Product" : "Create Product"}
+            </CustomButton>
+          </Box>
         </form>
       </Box>
     </Box>

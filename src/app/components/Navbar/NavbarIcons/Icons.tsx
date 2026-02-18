@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Cart from "./Cart/Cart";
 import User from "./PersonalInfo/User";
-import { Box, Button, Stack, } from "@mui/material";
+import { Button, Stack, } from "@mui/material";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 
 const Icons = () => {
@@ -13,8 +13,8 @@ const Icons = () => {
             spacing={1.5}
             sx={{
                 bgcolor: "#f9fafb",
-                px: 2,
-                py: 1,
+                px: { xs: 1, md: 2 },
+                py: { xs: 0.5, md: 1 },
                 borderRadius: "999px",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.05)",
             }}
@@ -26,10 +26,9 @@ const Icons = () => {
                 startIcon={<StorefrontOutlinedIcon />}
                 sx={{
                     textTransform: "none",
-                    fontWeight: 600,
+                    fontWeight: { xs: 200, md: 400 },
                     color: "#4f46e5",
                     borderRadius: "999px",
-                    px: 2,
                     "&:hover": {
                         bgcolor: "rgba(79,70,229,0.08)",
                     },
@@ -38,15 +37,6 @@ const Icons = () => {
                 Seller Store
             </Button>
 
-            {/* Divider Dot */}
-            <Box
-                sx={{
-                    width: 4,
-                    height: 4,
-                    bgcolor: "#cbd5e1",
-                    borderRadius: "50%",
-                }}
-            />
             {/* cart component */}
             <Cart />
             {/* user component */}

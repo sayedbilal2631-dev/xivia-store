@@ -32,7 +32,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                                 width: { xs: "90%", md: 260 },
                                 flexShrink: 0,
                                 position: { md: "sticky" },
-                                top: { md: 80 }, // below navbar
+                                top: { md: 80 },
                                 alignSelf: "flex-start",
                             }}
                         >

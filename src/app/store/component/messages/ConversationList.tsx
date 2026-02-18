@@ -1,9 +1,8 @@
 "use client";
-
 import { collection, query, where, onSnapshot, orderBy, limit,} from "firebase/firestore";
 import { Box, List, ListItemButton, Badge, Typography, Avatar,} from "@mui/material";
-import { db } from "@/app/config/firebase";
 import { useState, useEffect } from "react";
+import { db } from "@/app/config/firebase";
 
 interface ConversationListProps {
   currentUserId: string | any;
@@ -15,10 +14,7 @@ interface LastMessage {
   timestamp: any;
 }
 
-export default function ConversationList({
-  currentUserId,
-  onSelectConversation,
-}: ConversationListProps) {
+export default function ConversationList({ currentUserId, onSelectConversation,}: ConversationListProps) {
   const [conversations, setConversations] = useState<any[]>([]);
   const [unreadCounts, setUnreadCounts] = useState<{ [key: string]: number }>({});
   const [lastMessages, setLastMessages] = useState<{ [key: string]: LastMessage }>({});
@@ -69,12 +65,10 @@ export default function ConversationList({
     };
   }, [currentUserId]);
 
-  // ------------------ UNREAD COUNTS ------------------
+  //  UNREAD COUNTS 
   useEffect(() => {
     if (!currentUserId) return;
-
     const unsubscribes: any[] = [];
-
     conversations.forEach((convo) => {
       const q = query(
         collection(db, "conversations", convo.id, "messages"),
@@ -97,7 +91,7 @@ export default function ConversationList({
     };
   }, [conversations, currentUserId]);
 
-  // ------------------ LAST MESSAGE PER CONVERSATION ------------------
+  // LAST MESSAGE PER CONVERSATION 
   useEffect(() => {
     const unsubscribes: any[] = [];
 
@@ -120,16 +114,14 @@ export default function ConversationList({
           }));
         }
       });
-
       unsubscribes.push(unsub);
     });
-
     return () => {
       unsubscribes.forEach((unsub) => unsub());
     };
   }, [conversations]);
 
-  // ------------------ UI ------------------
+  // UI 
   return (
     <Box>
       <Typography variant="h6" mb={1}>

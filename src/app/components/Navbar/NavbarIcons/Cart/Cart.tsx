@@ -13,12 +13,12 @@ const Cart = () => {
   const handleToggleCart = (state: boolean) => () => {
     setOpenCart(state);
   };
+ 
   useEffect(() => {
     if (cartItems.length > 0) {
-      // Fetch all products
       Promise.all(
-        cartItems.map((id) =>
-          StoreService.getProductById(id.productId)
+        cartItems.map((item) =>
+          StoreService.getProductById(item.productId)
         )
       ).then((data) => {
         setCartProducts(data);
@@ -78,8 +78,7 @@ const Cart = () => {
                 Your Cart
               </Typography>
 
-              {/* ✅ Map and send product data to CartProduct */}
-              {cartProducts.map((product, idx) => (
+              {cartProducts?.map((product, idx) => (
                 <Box key={idx} sx={{ mt: 2 }}>
                   <CartProduct data={product} />
                 </Box>

@@ -1,9 +1,9 @@
 "use client";
-
 import { Alert, Pagination, Stack, Box } from "@mui/material";
 import { useUser } from "../context/CurrentUser/CurrentUser";
 import { useProducts } from "../hooks/prodcuts/useProduct";
 import GlobalCard from "../components/common/globalCard";
+import { toast } from "react-toastify";
 import { useState } from "react";
 
 interface ProductsProps {
@@ -17,7 +17,9 @@ const Products = ({ selectedCategory, search }: ProductsProps) => {
     const { data: products = [], isLoading, error } = useProducts(selectedCategory, search);
     const { firebaseUser } = useUser();
     const [page, setPage] = useState(1);
-
+    if(!products){
+        toast.error('No Product Found')
+    }
     // Correct total pages
     const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
 

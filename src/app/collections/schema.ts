@@ -63,7 +63,7 @@ export interface StoreFormData {
   storeName: string;
   description: string;
   category: StoreCategory;
-
+  sellerStripeId: string;
   // Contact
   email: string;
   phone: string;
@@ -146,13 +146,15 @@ export interface Product {
   stock: number | null;
   trackQuantity: boolean;
   allowBackorders: boolean;
+  sellerStripeId: string;
   weight?: number;
   dimensions?: {
     length: number;
     width: number;
     height: number;
   };
-  images: { url: string, publicId: string };
+  images: string[];
+  // primaryImage: { url: string, publicId: string };
   primaryImage: string;
   hasVariants: boolean;
   variants?: ProductVariant[];
